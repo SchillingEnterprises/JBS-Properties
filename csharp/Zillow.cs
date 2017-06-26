@@ -5,7 +5,7 @@ namespace JohnBaxterSchillingProperties
       public string zEstimate;
       public string getSearchResults;
       public string zws-id;
-      public int zpid = 95196527;
+      public int zpid = Zillow/key.zpid;
       public bool rentZEstimate = true;
 
       public string Address : base (addressNumber, streetAddress);
