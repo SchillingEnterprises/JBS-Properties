@@ -14,7 +14,7 @@ namespace JohnBaxterSchillingProperties
       {
         Console.WriteLine(addressNumber + " " + streetAddress);
         Console.WriteLine(city + " " + state + ", " + zipcode);
-        Console.WriteLine(Zillow.url);
+        Console.WriteLine(Zillow.ZEstimateURL);
       }
     }
 }
