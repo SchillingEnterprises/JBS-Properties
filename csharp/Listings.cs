@@ -1,20 +1,17 @@
 using System;
 
-namespace JohnBaxterSchillingProperties
+namespace JBSProperties
 {
-    class Listing
+    class Listing : Zillow
     {
-      public int addressNumber;
-      public string streetAddress;
-      public string city;
-      public string state;
-      public int zipcode;
 
-      Listing listing = new Listing (int addressNumber, string streetAddress, string city, string state, int zipcode)
+      public string Address : base (Address);
+      public string CityStateZip : base (CityStateZip);
+
+      Listing listing = new Listing (int addressNumber, string streetAddress, string city, string state, int zipCode)
       {
         Console.WriteLine(addressNumber + " " + streetAddress);
-        Console.WriteLine(city + " " + state + ", " + zipcode);
-        Console.WriteLine(Zillow.ZEstimateURL);
+        Console.WriteLine(city + " " + state + ", " + zipCode);
       }
     }
 }
