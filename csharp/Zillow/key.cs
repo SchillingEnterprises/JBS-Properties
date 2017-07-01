@@ -1,11 +1,7 @@
-namespace JohnBaxterSchillingProperties
+namespace Zillow
 {
-    class API
+    class Key
     {
-      // Connecting
-      public Connect (string url)
-      {
-        public int zpid = 95196527;
-      }
+      public int readonly zpid = 95196527 : base (zpid);
     }
 }
