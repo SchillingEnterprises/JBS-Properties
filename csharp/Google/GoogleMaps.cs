@@ -2,7 +2,7 @@ namespace GoogleMaps
 {
     class Declarations : Key
     {
-      private readonly string key = GoogleMaps.Key.zpid;
+      private readonly string key = Google.Key.zpid;
       string GoogleMapsURL = @"https://maps.googleapis.com/maps/api/streetview?size=400x400&location=" + JBSProperties.Listings.Latitude + ", " + JBSProperties.Listings.Longitude + "&key=" + key;
     }
 
