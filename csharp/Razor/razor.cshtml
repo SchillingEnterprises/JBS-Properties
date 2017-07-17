@@ -1,0 +1,63 @@
+public class Property
+{
+  public int addressNumber {get; set;}
+  public string streetAddress {get; set;}
+  public string city {get; set;}
+  public string state {get; set;}
+  public int zipCode {get; set;}
+  public byte[] Google Map{get; set;}
+}
+
+public class PropertyListViewModel
+{
+  public List <Property> Properties {get; set;}
+  public Property Properties {get; set;}
+}
+
+@Model PropertiesListings
+
+<h1>
+@using (HTML.BeginForm("Property", "Address", "Map", "Demographics"))
+
+{
+@HTML.LabelFor (m => m.Properties.Address)
+@HTML.TextBoxFor (m => m.Properties.Address)
+
+@HTML.LabelFor (m => m.Properties.Map)
+
+@HTML.LabelFor (m => m.Properties.Demographics)
+
+<button type = "Submit"> Buy Property </button>
+}
+
+<h1> All Properties </h1>
+<table>
+  <thead>
+    <tr>
+      <th> addressNumber </th>
+      <th> streetAddress </th>
+      <th> city </th>
+      <th> state </th>
+      <th> zipCode </th>
+      <th> GoogleMaps </th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var Property in Model.Properties)
+    {
+    <tr>
+      <td>
+        HTML.BeginForm("Edit Property", "Home")
+        {
+          HTML.DisplayFor (p => p.addressNumber)
+          HTML.DisplayFor (p => p.streetAddress)
+          HTML.DisplayFor (p => p.city)
+          HTML.DisplayFor (p => p.state)
+          HTML.DisplayFor (p => p.zipCode)
+          HTML.DisplayFor (p => p.GoogleMaps)
+          <button type="Submit">Edit</button>
+        }
+      </td>
+    </tr>
+    }
+  </tbody>
