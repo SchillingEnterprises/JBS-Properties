@@ -25,21 +25,21 @@ namespace Zillow
       return (ZEstimateURL);
     }
 
-      public static XmlDocument MakeRequest(string requestUrl)
+      public static XmlDocument MakeRequest (string requestUrl)
       {
           try
           {
-              HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
-              HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+              HttpWebRequest request = WebRequest.Create (requestUrl) as HttpWebRequest;
+              HttpWebResponse response = request.GetResponse () as HttpWebResponse;
 
-              XmlDocument xmlDoc = new XmlDocument();
-              xmlDoc.Load(response.GetResponseStream());
+              XmlDocument xmlDoc = new XmlDocument ();
+              xmlDoc.Load (response.GetResponseStream ());
               return (xmlDoc);
 
           }
           catch (Exception e)
           {
-              Console.WriteLine(e.Message);
+              Console.WriteLine (e.Message);
 
               Console.Read();
               return null;
