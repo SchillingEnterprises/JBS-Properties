@@ -1,0 +1,6 @@
+namespace JBSProperties
+{
+    class DeleteController
+    {
+    }
+  }
