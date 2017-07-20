@@ -1,4 +1,6 @@
-﻿namespace John_Baxter_Schilling.Models
+﻿using Newtonsoft.Json;
+
+namespace John_Baxter_Schilling.Models
 {
     public class GoogleMaps : Property
     {
