@@ -1,10 +1,10 @@
+using JBS_Properties.Areas.HelpPage.ModelDescriptions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
-using John_Baxter_Schilling.Areas.HelpPage.ModelDescriptions;
 
-namespace John_Baxter_Schilling.Areas.HelpPage.Models
+namespace JBS_Properties.Areas.HelpPage.Models
 {
     /// <summary>
     /// The model that represents an API displayed on the help page.

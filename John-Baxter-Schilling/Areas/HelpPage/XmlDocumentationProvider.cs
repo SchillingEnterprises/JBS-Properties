@@ -1,3 +1,4 @@
+using JBS_Properties.Areas.HelpPage.ModelDescriptions;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -5,9 +6,8 @@ using System.Reflection;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using System.Xml.XPath;
-using John_Baxter_Schilling.Areas.HelpPage.ModelDescriptions;
 
-namespace John_Baxter_Schilling.Areas.HelpPage
+namespace JBS_Properties.Areas.HelpPage
 {
     /// <summary>
     /// A custom <see cref="IDocumentationProvider"/> that reads the API documentation from an XML documentation file.

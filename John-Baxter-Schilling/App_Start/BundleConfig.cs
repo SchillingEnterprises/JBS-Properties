@@ -1,7 +1,6 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
-namespace John_Baxter_Schilling
+namespace JBS_Properties
 {
     public class BundleConfig
     {

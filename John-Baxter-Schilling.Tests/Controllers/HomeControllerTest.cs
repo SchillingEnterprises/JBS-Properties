@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using John_Baxter_Schilling;
-using John_Baxter_Schilling.Controllers;
+using JBS_Properties;
+using JBS_Properties.Controllers;
 
-namespace John_Baxter_Schilling.Tests.Controllers
+namespace JBS_Properties.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTest

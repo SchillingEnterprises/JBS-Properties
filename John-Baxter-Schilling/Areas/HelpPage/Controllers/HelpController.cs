@@ -1,10 +1,10 @@
+using JBS_Properties.Areas.HelpPage.ModelDescriptions;
+using JBS_Properties.Areas.HelpPage.Models;
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using John_Baxter_Schilling.Areas.HelpPage.ModelDescriptions;
-using John_Baxter_Schilling.Areas.HelpPage.Models;
 
-namespace John_Baxter_Schilling.Areas.HelpPage.Controllers
+namespace JBS_Properties.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

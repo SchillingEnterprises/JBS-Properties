@@ -1,4 +1,4 @@
-namespace John_Baxter_Schilling.Areas.HelpPage.ModelDescriptions
+namespace JBS_Properties.Areas.HelpPage.ModelDescriptions
 {
     public class SimpleTypeModelDescription : ModelDescription
     {

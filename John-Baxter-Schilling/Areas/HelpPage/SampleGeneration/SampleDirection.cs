@@ -1,4 +1,4 @@
-namespace John_Baxter_Schilling.Areas.HelpPage
+namespace JBS_Properties.Areas.HelpPage
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

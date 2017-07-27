@@ -1,3 +1,5 @@
+using JBS_Properties.Areas.HelpPage.ModelDescriptions;
+using JBS_Properties.Areas.HelpPage.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,10 +13,8 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using John_Baxter_Schilling.Areas.HelpPage.ModelDescriptions;
-using John_Baxter_Schilling.Areas.HelpPage.Models;
 
-namespace John_Baxter_Schilling.Areas.HelpPage
+namespace JBS_Properties.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {
@@ -282,7 +282,7 @@ namespace John_Baxter_Schilling.Areas.HelpPage
                     //     public int Y { get; set; }
                     // }
                     // Class Point is bindable with a TypeConverter, so Point will be added to UriParameters collection.
-                    // 
+                    //
                     // public class Point
                     // {
                     //     public int X { get; set; }

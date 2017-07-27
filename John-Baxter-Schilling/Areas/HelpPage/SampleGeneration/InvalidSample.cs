@@ -1,6 +1,6 @@
 using System;
 
-namespace John_Baxter_Schilling.Areas.HelpPage
+namespace JBS_Properties.Areas.HelpPage
 {
     /// <summary>
     /// This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.

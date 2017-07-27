@@ -3,7 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http.Description;
 
-namespace John_Baxter_Schilling.Areas.HelpPage
+namespace JBS_Properties.Areas.HelpPage
 {
     public static class ApiDescriptionExtensions
     {

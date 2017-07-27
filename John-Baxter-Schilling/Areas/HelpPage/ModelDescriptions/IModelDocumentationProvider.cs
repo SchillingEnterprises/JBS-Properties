@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace John_Baxter_Schilling.Areas.HelpPage.ModelDescriptions
+namespace JBS_Properties.Areas.HelpPage.ModelDescriptions
 {
     public interface IModelDocumentationProvider
     {

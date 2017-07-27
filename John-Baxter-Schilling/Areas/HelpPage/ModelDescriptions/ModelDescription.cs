@@ -1,6 +1,6 @@
 using System;
 
-namespace John_Baxter_Schilling.Areas.HelpPage.ModelDescriptions
+namespace JBS_Properties.Areas.HelpPage.ModelDescriptions
 {
     /// <summary>
     /// Describes a type model.
