@@ -156,7 +156,7 @@ namespace John_Baxter_Schilling.Data
                 }
             }
         }
-        
+
         public string OfficialAddress => PropertyAddressNumber + " " + PropertyStreetName + " " + PropertyCity + " " + "KY" + " " + PropertyPostalCode;
     }
 }
