@@ -16,12 +16,6 @@
             @Html.DisplayNameFor(model => model.OfficialAddress)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Availability)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentlyRented)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.LeaseRenewalDate)
         </th>
         <th>
@@ -33,13 +27,9 @@
         <th>
             @Html.DisplayNameFor(model => model.PrimaryTennetEmailAddress)
         </th>
-        <td>
-            @Html.DisplayNameFor(model => model.PropertyPurchaseAmount)
-        </td>
         <th>
-            @Html.DisplayNameFor(model => model.PurchaseDate)
+            @Html.DisplayNameFor(model => model.CurrentMonthlyRentAmountSignedForThisDwelling)
         </th>
-        <th></th>
     </tr>
 
     @foreach (var item in Model)
@@ -47,12 +37,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.OfficialAddress)
-            </td>
-            <td>
-                @Html.CheckBoxFor(modelItem => item.Availability.Value)
-            </td>
-            <td>
-                @Html.CheckBoxFor(modelItem => item.CurrentlyRented.Value)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LeaseRenewalDate)
@@ -67,10 +51,7 @@
                 @Html.DisplayFor(modelItem => item.PrimaryTennetEmailAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PropertyPurchaseAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PurchaseDate)
+                @Html.DisplayFor(modelItem => item.CurrentMonthlyRentAmountSignedForThisDwelling)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
