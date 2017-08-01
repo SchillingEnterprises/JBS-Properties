@@ -1,0 +1,13 @@
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\System.IO.Compression.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\VBCSCompiler.exe
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\System.Security.Cryptography.Primitives.dll
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\John-Baxter-Schilling\bin\roslyn\System.ValueTuple.dll
