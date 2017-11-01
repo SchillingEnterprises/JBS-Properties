@@ -71,5 +71,6 @@ C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\bin\EntityFramewo
 C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\bin\EntityFramework.SqlServer.xml
 C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\bin\System.Diagnostics.DiagnosticSource.xml
+C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\obj\Release\JBS_Properties.csprojResolveAssemblyReference.cache
 C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\obj\Release\John-Baxter-Schilling.dll
 C:\Users\schil\Documents\GitHub\Websites\John-Baxter-Schilling\obj\Release\John-Baxter-Schilling.pdb
