@@ -1,2 +1,1 @@
-# JBS-Properties
-Fork Repo and run from Visual Studio 2017.
+[![Board Status](https://dev.azure.com/gavinschillingmarketing/fbf5310e-9847-42c1-9818-deaecf699bbe/d1a1e127-2f58-4f14-b407-932e269fb000/_apis/work/boardbadge/47b38693-de18-4988-a38f-af74165d5ca6)](https://dev.azure.com/gavinschillingmarketing/fbf5310e-9847-42c1-9818-deaecf699bbe/_boards/board/t/d1a1e127-2f58-4f14-b407-932e269fb000/Microsoft.RequirementCategory/)
