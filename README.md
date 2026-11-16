@@ -43,3 +43,12 @@ It guards the existing class-level authorization on the property and Fitness Fro
 ## Modernization status
 
 This is a legacy .NET Framework application, not a new .NET 8/10 ASP.NET Core project. The first step is a safe build baseline and access-control hardening. A migration to a supported runtime should be staged with verified authentication, database backup/migration strategy, and integration tests rather than an in-place framework-number change.
+
+
+## Front-end stack
+
+The classic MVC views use Bootstrap 5.3.9 with version-pinned jsDelivr assets and Subresource Integrity (SRI). Bootstrap's CSS and JavaScript are loaded from the pinned CDN URLs in the shared layout; the obsolete Bootstrap 3 NuGet package, local CSS/JS bundle entries, and Glyphicons assets are no longer part of the app bundle. The application-specific theme remains in `Content/Site.css`.
+
+The property list, create/edit forms, details view, deletion confirmation, and shared navigation use Bootstrap 5 responsive components and `data-bs-*` attributes. The create/edit forms share one partial to keep their fields aligned. Server-side MVC validation and anti-forgery protection remain enabled; the legacy client-validation bundle was not present in the repository and is not falsely advertised as active.
+
+Bootstrap CDN version and SRI values must be updated together. The browser will reject a mismatched asset. See the [official Bootstrap 5.3 installation guide](https://getbootstrap.com/docs/5.3/getting-started/introduction/).
