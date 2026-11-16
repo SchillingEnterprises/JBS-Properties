@@ -18,6 +18,8 @@ The property and activity controllers require an authenticated identity; POST op
 
 The database may hold tenant/contact and property financial information. Never commit populated databases or exports.
 
+The property-details map preview reads `GOOGLE_MAPS_BROWSER_API_KEY` from the hosting environment and renders no external map request when it is unset. Configure only a dedicated Google Maps browser key with HTTP-referrer restrictions and API restrictions. A previously hard-coded key was exposed in repository history: revoke/rotate it in Google Cloud Console; removing it from the current source does not invalidate the historical credential.
+
 ## Build
 
 Use Visual Studio/MSBuild on Windows with the .NET Framework 4.6.1 targeting references. The repository's CI workflow restores packages and compiles the application in Release configuration.
