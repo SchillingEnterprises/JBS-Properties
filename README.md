@@ -27,6 +27,17 @@ nuget restore JBS_Properties.sln
 msbuild JBS_Properties.sln /p:Configuration=Release
 ```
 
+
+## Security regression checks
+
+A lightweight source-contract suite runs in GitHub Actions alongside the Windows/MSBuild build:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+It guards the existing class-level authorization on the property and Fitness Frog controllers and verifies anti-forgery validation on every POST action. These checks are intentionally source-level guardrails; they do not provide an identity provider or substitute for authenticated end-to-end tests. Configure and verify a real identity provider before deployment, and do not remove authorization attributes to bypass the missing sign-in configuration.
+
 ## Modernization status
 
 This is a legacy .NET Framework application, not a new .NET 8/10 ASP.NET Core project. The first step is a safe build baseline and access-control hardening. A migration to a supported runtime should be staged with verified authentication, database backup/migration strategy, and integration tests rather than an in-place framework-number change.
