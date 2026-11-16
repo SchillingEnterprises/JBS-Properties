@@ -85,6 +85,11 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertIn("archivePath.StartsWith(webRoot, StringComparison.OrdinalIgnoreCase)", source)
         self.assertIn("JsonRequestBehavior.AllowGet", source)
         self.assertIn("Response.Cache.SetMaxAge(TimeSpan.FromMinutes(5))", source)
+        self.assertEqual(source.count("catch (UnauthorizedAccessException)"), 2)
+        self.assertIn("addressToken.Type != JTokenType.String", source)
+        self.assertIn("statusToken.Type != JTokenType.String", source)
+        self.assertIn("addressToken.Value<string>()", source)
+        self.assertIn("statusToken.Value<string>()", source)
 
     def test_public_projection_is_an_explicit_two_field_allowlist(self):
         source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
