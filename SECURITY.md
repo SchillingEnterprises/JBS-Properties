@@ -14,7 +14,9 @@ The repository does not currently include a verified account/login workflow or a
 
 ## Sensitive data
 
-The property application models tenant names, contact information, lease dates, and purchase/financial details. Treat the database as confidential. Use HTTPS, access controls, backups, audit logging, least privilege, and an approved retention policy. Do not commit populated databases or tenant exports. The tracker may hold personal activity records and should also remain private.
+The property application models tenant names, contact information, lease dates, and purchase/financial details. Treat the management database as confidential. Use HTTPS, access controls, backups, audit logging, least privilege, and an approved retention policy. Do not commit populated databases or tenant exports. The tracker may hold personal activity records and should also remain private.
+
+The approved public archive is read server-side from `App_Data/property.json`. The anonymous `/PublicProperties` page and `/PublicProperties/Feed` endpoint expose only address and status through an explicit DTO allowlist. Do not add tenant details, lease fields, purchase history, map coordinates, provider URLs, or arbitrary archive properties to that DTO. The archive file itself remains public in this public GitHub repository; App_Data prevents direct static serving by the ASP.NET application but does not make a public Git repository private. The public status is archival, not a real-time availability promise.
 
 ## Legacy platform
 
