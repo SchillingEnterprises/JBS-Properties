@@ -65,6 +65,43 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertEqual(len(re.findall(r"(?m)^\s*@model\b", partial)), 1)
         self.assertIn("GOOGLE_MAPS_BROWSER_API_KEY", partial)
 
+
+    def test_public_portfolio_controller_is_protected_by_default_with_two_explicit_anonymous_actions(self):
+        source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
+        self.assertRegex(source, r"(?m)^\\s*\\[Authorize\\]\\s*public\\s+class\\s+PublicPropertiesController")
+        self.assertRegex(source, r"(?s)\\[AllowAnonymous\\]\\s*public\\s+ActionResult\\s+Index")
+        self.assertRegex(source, r"(?s)\\[AllowAnonymous\\]\\s*public\\s+JsonResult\\s+Feed")
+        self.assertIn('Server.MapPath("~/App_Data/property.json")', source)
+        self.assertIn("JsonRequestBehavior.AllowGet", source)
+        self.assertIn("Response.Cache.SetMaxAge(TimeSpan.FromMinutes(5))", source)
+
+    def test_public_projection_is_an_explicit_two_field_allowlist(self):
+        source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
+        model = (ROOT / "Models" / "PublicPropertyListing.cs").read_text(encoding="utf-8-sig")
+        view = (ROOT / "Views" / "PublicProperties" / "Index.cshtml").read_text(encoding="utf-8-sig")
+        self.assertIn("Address = address.Trim()", source)
+        self.assertIn("Status = status.Trim()", source)
+        self.assertNotIn('row["purchase-price"]', source)
+        self.assertNotIn('row["purchase-date"]', source)
+        self.assertNotIn('row["zestimate"]', source)
+        self.assertNotIn('row["image"]', source)
+        self.assertNotIn("NamesOnLease", source + model + view)
+        self.assertNotIn("PhoneNumberForTennet", source + model + view)
+        self.assertNotIn("PrimaryTennetEmailAddress", source + model + view)
+        self.assertEqual(len(re.findall(r"(?m)^\\s*public\\s+string\\s+\\w+\\s*\\{\\s*get;", model)), 2)
+
+    def test_public_archive_records_are_valid_and_feed_status_is_not_claimed_live(self):
+        import json
+        archive = json.loads((ROOT / "App_Data" / "property.json").read_text(encoding="utf-8-sig"))
+        self.assertIsInstance(archive.get("rental"), list)
+        for record in archive["rental"]:
+            self.assertTrue(record.get("address", "").strip())
+            self.assertTrue(record.get("status", "").strip())
+        view = (ROOT / "Views" / "PublicProperties" / "Index.cshtml").read_text(encoding="utf-8-sig")
+        self.assertIn("may not reflect real-time availability", view)
+        self.assertIn("@property.Address", view)
+        self.assertIn("@property.Status", view)
+
     def test_activity_controller_remains_protected(self):
         source = (CONTROLLERS / "EntriesController.cs").read_text(encoding="utf-8-sig")
         self.assertRegex(source, r"(?m)^\s*\[Authorize\]\s*public\s+class\s+EntriesController")
