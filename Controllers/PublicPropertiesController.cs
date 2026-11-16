@@ -25,6 +25,10 @@ namespace John_Baxter_Schilling.Controllers
             {
                 return new HttpStatusCodeResult(503, "Public property data is temporarily unavailable.");
             }
+            catch (UnauthorizedAccessException)
+            {
+                return new HttpStatusCodeResult(503, "Public property data is temporarily unavailable.");
+            }
             catch (JsonException)
             {
                 return new HttpStatusCodeResult(503, "Public property data is temporarily unavailable.");
@@ -52,6 +56,10 @@ namespace John_Baxter_Schilling.Controllers
                 );
             }
             catch (IOException)
+            {
+                return FeedUnavailable();
+            }
+            catch (UnauthorizedAccessException)
             {
                 return FeedUnavailable();
             }
@@ -115,8 +123,16 @@ namespace John_Baxter_Schilling.Controllers
             foreach (var token in rentalRows)
             {
                 var row = token as JObject;
-                var address = row == null ? null : (string)row["address"];
-                var status = row == null ? null : (string)row["status"];
+                var addressToken = row == null ? null : row["address"];
+                var statusToken = row == null ? null : row["status"];
+                if (addressToken == null || addressToken.Type != JTokenType.String
+                    || statusToken == null || statusToken.Type != JTokenType.String)
+                {
+                    throw new InvalidDataException("Every public property record requires string address and status values.");
+                }
+
+                var address = addressToken.Value<string>();
+                var status = statusToken.Value<string>();
                 if (String.IsNullOrWhiteSpace(address) || String.IsNullOrWhiteSpace(status))
                 {
                     throw new InvalidDataException("Every public property record requires an address and status.");
