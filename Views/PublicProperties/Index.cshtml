@@ -1,0 +1,47 @@
+@model IEnumerable<John_Baxter_Schilling.Models.PublicPropertyListing>
+
+@{
+    ViewBag.Title = "Property portfolio";
+}
+
+<section class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-1">JBS Properties</p>
+    <h1 class="h2 mb-2">Property portfolio</h1>
+    <p class="text-secondary mb-0">
+        A public snapshot of selected property records. Status is reproduced from the source archive
+        and may not reflect real-time availability.
+    </p>
+</section>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <p class="mb-0 text-secondary">@Model.Count() properties in this public snapshot</p>
+    @Html.ActionLink("View JSON feed", "Feed", "PublicProperties", null, new { @class = "btn btn-sm btn-outline-secondary" })
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-secondary" role="status">No public property records are currently available.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+        @foreach (var property in Model)
+        {
+            <div class="col">
+                <article class="card h-100">
+                    <div class="card-body">
+                        <h2 class="h5 card-title">@property.Address</h2>
+                        <p class="card-text mb-0">
+                            <span class="badge text-bg-secondary">@property.Status</span>
+                        </p>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+}
+
+<p class="small text-secondary mt-4 mb-0">
+    This portfolio view intentionally excludes tenant identities and contact details, lease information,
+    purchase records, and third-party provider metadata.
+</p>

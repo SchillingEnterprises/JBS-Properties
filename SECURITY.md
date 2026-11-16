@@ -14,7 +14,9 @@ The repository does not currently include a verified account/login workflow or a
 
 ## Sensitive data
 
-The property application models tenant names, contact information, lease dates, and purchase/financial details. Treat the database as confidential. Use HTTPS, access controls, backups, audit logging, least privilege, and an approved retention policy. Do not commit populated databases or tenant exports. The tracker may hold personal activity records and should also remain private.
+The property application models tenant names, contact information, lease dates, and purchase/financial details. Treat the management database as confidential. Use HTTPS, access controls, backups, audit logging, least privilege, and an approved retention policy. Do not commit populated databases or tenant exports. The tracker may hold personal activity records and should also remain private.
+
+The anonymous `/PublicProperties` page and `/PublicProperties/Feed` endpoint expose only address and status through an explicit DTO allowlist. For stronger source-data protection on a configured host, set `JBS_PROPERTY_DATA_PATH` to an absolute JSON file path outside the web root and outside Git; the controller rejects relative paths and paths inside the web root. Do not add tenant details, lease fields, purchase history, map coordinates, provider URLs, or arbitrary archive properties to the public DTO. If the host variable is unset, the app reads the approved public fallback archive at `App_Data/property.json`, which remains visible in the public Git repository; App_Data only prevents direct static serving by the ASP.NET application. The public status is archival, not a real-time availability promise.
 
 ## Legacy platform
 
