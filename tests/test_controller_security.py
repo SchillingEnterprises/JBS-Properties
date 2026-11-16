@@ -44,6 +44,12 @@ class ControllerAccessControlTests(unittest.TestCase):
                 pattern = r"(?s)\[HttpPost[^]]*\]\s*\[ValidateAntiForgeryToken\]\s*public\s+ActionResult\s+" + action + r"\b"
                 self.assertRegex(source, pattern)
 
+    def test_property_map_key_is_not_committed_to_the_view(self):
+        view = (ROOT / "Views" / "Dwellings" / "Details.cshtml").read_text(encoding="utf-8-sig")
+        self.assertNotRegex(view, r"AIza[0-9A-Za-z_-]{30,}")
+        self.assertIn("GOOGLE_MAPS_BROWSER_API_KEY", view)
+        self.assertIn('alt="Street view preview', view)
+
     def test_activity_controller_remains_protected(self):
         source = (CONTROLLERS / "EntriesController.cs").read_text(encoding="utf-8-sig")
         self.assertRegex(source, r"(?m)^\s*\[Authorize\]\s*public\s+class\s+EntriesController")
