@@ -1,25 +1,38 @@
-name: .NET
+name: .NET Framework CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [master]
   pull_request:
-    branches: [ "master" ]
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dotnet-framework-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    name: Restore and build (.NET Framework 4.6.1)
+    runs-on: windows-2022
+    timeout-minutes: 30
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2
+
+      - name: Restore NuGet packages
+        shell: pwsh
+        run: nuget restore .\JBS_Properties.sln -NonInteractive
+
+      - name: Build solution
+        shell: pwsh
+        run: msbuild .\JBS_Properties.sln /m /p:Configuration=Release /p:ContinuousIntegrationBuild=true /verbosity:minimal
+
+      # The repository currently has no dedicated test project. Keep the
+      # pipeline honest: compilation is not reported as unit-test coverage.
