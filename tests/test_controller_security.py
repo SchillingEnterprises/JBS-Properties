@@ -68,9 +68,9 @@ class ControllerAccessControlTests(unittest.TestCase):
 
     def test_public_portfolio_controller_is_protected_by_default_with_two_explicit_anonymous_actions(self):
         source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
-        self.assertRegex(source, r"(?m)^\\s*\\[Authorize\\]\\s*public\\s+class\\s+PublicPropertiesController")
-        self.assertRegex(source, r"(?s)\\[AllowAnonymous\\]\\s*public\\s+ActionResult\\s+Index")
-        self.assertRegex(source, r"(?s)\\[AllowAnonymous\\]\\s*public\\s+JsonResult\\s+Feed")
+        self.assertRegex(source, r"(?m)^\s*\[Authorize\]\s*public\s+class\s+PublicPropertiesController")
+        self.assertRegex(source, r"(?s)\[AllowAnonymous\]\s*public\s+ActionResult\s+Index")
+        self.assertRegex(source, r"(?s)\[AllowAnonymous\]\s*public\s+JsonResult\s+Feed")
         self.assertIn('Server.MapPath("~/App_Data/property.json")', source)
         self.assertIn("JsonRequestBehavior.AllowGet", source)
         self.assertIn("Response.Cache.SetMaxAge(TimeSpan.FromMinutes(5))", source)
@@ -88,7 +88,7 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertNotIn("NamesOnLease", source + model + view)
         self.assertNotIn("PhoneNumberForTennet", source + model + view)
         self.assertNotIn("PrimaryTennetEmailAddress", source + model + view)
-        self.assertEqual(len(re.findall(r"(?m)^\\s*public\\s+string\\s+\\w+\\s*\\{\\s*get;", model)), 2)
+        self.assertEqual(len(re.findall(r"(?m)^\s*public\s+string\s+\w+\s*\{\s*get;", model)), 2)
 
     def test_public_archive_records_are_valid_and_feed_status_is_not_claimed_live(self):
         import json
