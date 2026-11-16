@@ -12,7 +12,7 @@ namespace JBS_Properties
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Dwellings", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "PublicProperties", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
