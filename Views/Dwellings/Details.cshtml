@@ -1,84 +1,61 @@
-﻿@model John_Baxter_Schilling.Data.Dwelling
+@model John_Baxter_Schilling.Data.Dwelling
 
 @{
-    ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    // Use a dedicated browser key restricted by HTTP referrer in Google Cloud.
-    // This value is intentionally not committed to source control.
+    ViewBag.Title = "Property details";
     var mapsBrowserKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_BROWSER_API_KEY");
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>@Html.DisplayFor(model => model.OfficialAddress)</h4>
-    <hr />
-    <dl class="dl-horizontal col-xs-12 col-md-4">
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PropertyPurchaseAmount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PropertyPurchaseAmount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PurchaseDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PurchaseDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NamesOnLease)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NamesOnLease)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumberForTennet)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumberForTennet)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PrimaryTennetEmailAddress)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PrimaryTennetEmailAddress)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LeaseRenewalDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LeaseRenewalDate)
-        </dd>
-    </dl>
-    <section class="col-md-4" aria-label="Property location preview">
-        @if (!String.IsNullOrWhiteSpace(mapsBrowserKey))
-        {
-            <img class="img-responsive"
-                 src="@string.Format("https://maps.googleapis.com/maps/api/streetview?size=400x400&amp;location={0}&amp;key={1}", Uri.EscapeDataString(Model.OfficialAddress), Uri.EscapeDataString(mapsBrowserKey))"
-                 alt="Street view preview of the property at @Model.OfficialAddress"
-                 loading="lazy" />
-        }
-        else
-        {
-            <p class="text-muted" role="status">Map preview is not configured for this environment.</p>
-        }
-    </section>
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <div>
+        <p class="text-uppercase text-secondary small fw-semibold mb-1">Portfolio</p>
+        <h1 class="h2 mb-1">Property details</h1>
+        <p class="text-secondary mb-0">@Model.OfficialAddress</p>
+    </div>
+    @Html.ActionLink("Edit property", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
 </div>
 
-<p class="col-md-1">
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<div class="card">
+    <div class="card-header py-3">
+        <h2 class="h5 mb-0">Property and lease information</h2>
+    </div>
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <div class="col-12 col-lg-7">
+                <dl class="row mb-0">
+                    <dt class="col-sm-5 text-secondary">@Html.DisplayNameFor(model => model.PropertyPurchaseAmount)</dt>
+                    <dd class="col-sm-7">@Html.DisplayFor(model => model.PropertyPurchaseAmount)</dd>
+                    <dt class="col-sm-5 text-secondary">@Html.DisplayNameFor(model => model.PurchaseDate)</dt>
+                    <dd class="col-sm-7">@Html.DisplayFor(model => model.PurchaseDate)</dd>
+                    <dt class="col-sm-5 text-secondary">@Html.DisplayNameFor(model => model.NamesOnLease)</dt>
+                    <dd class="col-sm-7">@Html.DisplayFor(model => model.NamesOnLease)</dd>
+                    <dt class="col-sm-5 text-secondary">@Html.DisplayNameFor(model => model.PhoneNumberForTennet)</dt>
+                    <dd class="col-sm-7">@Html.DisplayFor(model => model.PhoneNumberForTennet)</dd>
+                    <dt class="col-sm-5 text-secondary">@Html.DisplayNameFor(model => model.PrimaryTennetEmailAddress)</dt>
+                    <dd class="col-sm-7 text-break">@Html.DisplayFor(model => model.PrimaryTennetEmailAddress)</dd>
+                    <dt class="col-sm-5 text-secondary">@Html.DisplayNameFor(model => model.LeaseRenewalDate)</dt>
+                    <dd class="col-sm-7">@Html.DisplayFor(model => model.LeaseRenewalDate)</dd>
+                </dl>
+            </div>
+            <div class="col-12 col-lg-5">
+                <h3 class="h6">Location preview</h3>
+                @if (!String.IsNullOrWhiteSpace(mapsBrowserKey))
+                {
+                    <img class="property-map-preview"
+                         src="@string.Format("https://maps.googleapis.com/maps/api/streetview?size=600x600&amp;location={0}&amp;key={1}", Uri.EscapeDataString(Model.OfficialAddress), Uri.EscapeDataString(mapsBrowserKey))"
+                         alt="Street view preview near @Model.OfficialAddress"
+                         loading="lazy" />
+                }
+                else
+                {
+                    <div class="rounded-3 bg-light border p-4 text-secondary" role="status">
+                        Map preview is not configured for this environment.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex gap-2 mt-4">
+    @Html.ActionLink("Back to properties", "Index", null, new { @class = "btn btn-outline-secondary" })
+</div>

@@ -1,25 +1,22 @@
 @model John_Baxter_Schilling.Data.Dwelling
 
 @{
-    // A browser-restricted key is required for the Street View Static API.
-    // Never place provider credentials in source-controlled Razor views.
     var mapsBrowserKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_BROWSER_API_KEY");
 }
 
-<article class="card property-card">
-    <div class="card-body">
-        <h2 class="card-title">@Model.OfficialAddress</h2>
-        <p class="card-text">@(Model.CurrentlyRented == true ? "Currently rented" : "Availability to be confirmed")</p>
+<article class="card h-100 property-card">
+    <div class="card-body d-flex flex-column">
+        <h2 class="h5 card-title property-address">@Model.OfficialAddress</h2>
+        <p class="card-text text-secondary">@(Model.CurrentlyRented == true ? "Currently rented" : "Availability to be confirmed")</p>
         @if (!String.IsNullOrWhiteSpace(mapsBrowserKey))
         {
-            <img class="img-responsive"
-                 src="@string.Format("https://maps.googleapis.com/maps/api/streetview?size=400x400&amp;location={0}&amp;key={1}", Uri.EscapeDataString(Model.OfficialAddress), Uri.EscapeDataString(mapsBrowserKey))"
-                 alt="Street view preview of @Model.OfficialAddress"
+            <img class="property-map-preview mb-3"
+                 src="@string.Format("https://maps.googleapis.com/maps/api/streetview?size=600x600&amp;location={0}&amp;key={1}", Uri.EscapeDataString(Model.OfficialAddress), Uri.EscapeDataString(mapsBrowserKey))"
+                 alt="Street view preview near @Model.OfficialAddress"
                  loading="lazy" />
         }
-        else
-        {
-            <p class="text-muted" role="status">Map preview is not configured for this environment.</p>
-        }
+        <div class="mt-auto">
+            @Html.ActionLink("View details", "Details", "Dwellings", new { id = Model.Id }, new { @class = "btn btn-outline-primary btn-sm" })
+        </div>
     </div>
 </article>
