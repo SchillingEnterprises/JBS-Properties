@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace John_Baxter_Schilling.Controllers
 {
+    [Authorize]
     public class DwellingsController : Controller
     {
         private Property db = new Property();
@@ -106,6 +107,11 @@ namespace John_Baxter_Schilling.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Dwelling dwelling = db.Dwellings.Find(id);
+            if (dwelling == null)
+            {
+                return HttpNotFound();
+            }
+
             db.Dwellings.Remove(dwelling);
             db.SaveChanges();
             return RedirectToAction("Index");

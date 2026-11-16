@@ -8,6 +8,7 @@ using Treehouse.FitnessFrog.Models;
 
 namespace Treehouse.FitnessFrog.Controllers
 {
+    [Authorize]
     public class EntriesController : Controller
     {
         private EntriesRepository _entriesRepository = null;
@@ -21,19 +22,22 @@ namespace Treehouse.FitnessFrog.Controllers
         {
             List<Entry> entries = _entriesRepository.GetEntries();
 
-            // Calculate the total activity.
-            double totalActivity = entries
-                .Where(e => e.Exclude == false)
-                .Sum(e => e.Duration);
+            // Only included entries contribute to the total and daily average.
+            List<Entry> includedEntries = entries
+                .Where(e => !e.Exclude)
+                .ToList();
+            double totalActivity = includedEntries.Sum(e => e.Duration);
 
-            // Determine the number of days that have entries.
-            int numberOfActiveDays = entries
-                .Select(e => e.Date)
+            // Avoid NaN/Infinity when there are no included entries.
+            int numberOfActiveDays = includedEntries
+                .Select(e => e.Date.Date)
                 .Distinct()
                 .Count();
 
             ViewBag.TotalActivity = totalActivity;
-            ViewBag.AverageDailyActivity = (totalActivity / (double)numberOfActiveDays);
+            ViewBag.AverageDailyActivity = numberOfActiveDays == 0
+                ? 0d
+                : totalActivity / numberOfActiveDays;
 
             return View(entries);
         }
@@ -51,6 +55,7 @@ namespace Treehouse.FitnessFrog.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Add(Entry entry)
         {
             ValidateEntry(entry);
@@ -90,6 +95,7 @@ namespace Treehouse.FitnessFrog.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Entry entry)
         {
             ValidateEntry(entry);
@@ -124,6 +130,7 @@ namespace Treehouse.FitnessFrog.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             _entriesRepository.DeleteEntry(id);

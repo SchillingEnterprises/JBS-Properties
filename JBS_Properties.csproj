@@ -17,6 +17,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>John_Baxter_Schilling</RootNamespace>
     <AssemblyName>John-Baxter-Schilling</AssemblyName>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -28,6 +29,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
+  <!-- NuGet-provided reference assemblies for builds where the 4.6.1 targeting pack is not installed. -->
+  <Import Project="packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets" Condition="Exists('packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net461.targets')" />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
