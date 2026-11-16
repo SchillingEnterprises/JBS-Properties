@@ -202,7 +202,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\DwellingsController.cs" />
+    <Compile Include="Controllers\PublicPropertiesController.cs" />
     <Compile Include="Models\Property.cs" />
+    <Compile Include="Models\PublicPropertyListing.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -220,6 +222,7 @@
     <Content Include="Views\Dwellings\Edit.cshtml" />
     <Content Include="Views\Dwellings\Index.cshtml" />
     <Content Include="Views\Dwellings\_DwellingFormFields.cshtml" />
+    <Content Include="Views\PublicProperties\Index.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
   </ItemGroup>
