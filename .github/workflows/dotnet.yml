@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: dotnet-framework-${{ github.ref }}
+  group: jbs-dotnet-framework-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -23,16 +23,16 @@ jobs:
       - name: Check out source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Add MSBuild to PATH
+      - name: Add Visual Studio MSBuild to PATH
         uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2
 
-      - name: Restore NuGet packages
+      - name: Restore NuGet packages, including .NET Framework reference assemblies
         shell: pwsh
         run: nuget restore .\JBS_Properties.sln -NonInteractive
 
-      - name: Build solution
+      - name: Build solution in Release configuration
         shell: pwsh
         run: msbuild .\JBS_Properties.sln /m /p:Configuration=Release /p:ContinuousIntegrationBuild=true /verbosity:minimal
 
-      # The repository currently has no dedicated test project. Keep the
-      # pipeline honest: compilation is not reported as unit-test coverage.
+      # No test project is currently present. This build gate intentionally
+      # does not claim that the application has unit-test coverage.
