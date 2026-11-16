@@ -79,7 +79,31 @@ namespace John_Baxter_Schilling.Controllers
         {
             // App_Data is not a directly served public directory in ASP.NET.
             // The only public output is the allowlisted DTO below.
-            var archivePath = Server.MapPath("~/App_Data/property.json");
+            var configuredPath = Environment.GetEnvironmentVariable("JBS_PROPERTY_DATA_PATH");
+            string archivePath;
+            if (String.IsNullOrWhiteSpace(configuredPath))
+            {
+                // Backward-compatible fallback: this archive contains only the
+                // user-approved public source records tracked in this repository.
+                archivePath = Server.MapPath("~/App_Data/property.json");
+            }
+            else
+            {
+                if (!Path.IsPathRooted(configuredPath))
+                {
+                    throw new InvalidDataException("The configured property source path must be absolute.");
+                }
+
+                archivePath = Path.GetFullPath(configuredPath);
+                var webRoot = Path.GetFullPath(Server.MapPath("~/"))
+                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                    + Path.DirectorySeparatorChar;
+                if (archivePath.StartsWith(webRoot, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidDataException("The configured property source must be outside the web root.");
+                }
+            }
+
             var archive = JObject.Parse(System.IO.File.ReadAllText(archivePath));
             var rentalRows = archive["rental"] as JArray;
             if (rentalRows == null)
