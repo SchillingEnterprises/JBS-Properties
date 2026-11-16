@@ -1,17 +1,107 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+:root {
+    color-scheme: light;
+    --jbs-ink: #172a3a;
+    --jbs-muted: #637381;
+    --jbs-surface: #f4f7fa;
+    --jbs-border: #dfe6ec;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+html {
+    scroll-padding-top: 5.5rem;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+body {
+    min-height: 100vh;
+    padding-top: 4.75rem;
+    background: var(--jbs-surface);
+    color: var(--jbs-ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.page-shell {
+    min-height: calc(100vh - 10rem);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.navbar {
+    background: var(--jbs-ink) !important;
+}
+
+.navbar-brand {
+    letter-spacing: .015em;
+}
+
+.site-footer {
+    background: #fff;
+    color: var(--jbs-muted);
+}
+
+.card {
+    border-color: var(--jbs-border);
+    border-radius: .9rem;
+    box-shadow: 0 .25rem 1rem rgba(23, 42, 58, .05);
+}
+
+.card-header {
+    background: #fff;
+    border-bottom-color: var(--jbs-border);
+}
+
+.form-control,
+.form-select {
+    max-width: 100%;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.table-responsive {
+    border: 1px solid var(--jbs-border);
+    border-radius: .75rem;
+    background: #fff;
+}
+
+.table-responsive .table {
+    margin-bottom: 0;
+}
+
+.table > :not(caption) > * > * {
+    padding: .85rem 1rem;
+    vertical-align: middle;
+}
+
+.property-address {
+    overflow-wrap: anywhere;
+}
+
+.property-map-preview {
+    width: 100%;
+    max-width: 28rem;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: .75rem;
+}
+
+.skip-link:focus {
+    position: fixed;
+    z-index: 2000;
+    top: .5rem;
+    left: .5rem;
+    padding: .75rem 1rem;
+    background: #fff;
+    color: #000;
+    border: 2px solid var(--jbs-ink);
+    border-radius: .5rem;
+}
+
+@media (max-width: 575.98px) {
+    .page-shell {
+        padding-top: 1.25rem;
+    }
+
+    .table > :not(caption) > * > * {
+        padding: .65rem .75rem;
+    }
 }
