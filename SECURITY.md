@@ -1,13 +1,23 @@
 # Security Policy
 
-## Reporting a vulnerability
+## Current controls and boundaries
 
-Please do not disclose suspected vulnerabilities in public issues or pull requests.
+- The property-management and activity-tracking controllers now require an authenticated identity.
+- All state-changing POST actions in the tracker require anti-forgery tokens.
+- The dwelling delete action handles missing records safely.
+- Activity averages return zero when there are no included entries.
+- Web.config disables compilation debug output and adds basic browser security headers.
 
-Use GitHub's private vulnerability reporting feature for this repository when it is enabled. Include the affected component, impact, reproduction steps, and any relevant logs with secrets removed.
+## Important deployment limitation
 
-If private vulnerability reporting is unavailable, contact the repository maintainers through a private GitHub channel. Please allow maintainers reasonable time to investigate and coordinate a fix before public disclosure.
+The repository does not currently include a verified account/login workflow or a confirmed authentication provider. The protected controllers will deny anonymous requests, but this patch does not invent an identity provider or create a default administrator. Configure and test real authentication/authorization before deploying. Do not remove the authorization attributes simply to make the pages accessible.
 
-## Supported versions
+## Sensitive data
 
-This repository is a legacy .NET Framework application. No formal support matrix is currently published. Treat the default branch as the primary maintenance line and verify deployment compatibility before applying framework or dependency upgrades.
+The property application models tenant names, contact information, lease dates, and purchase/financial details. Treat the database as confidential. Use HTTPS, access controls, backups, audit logging, least privilege, and an approved retention policy. Do not commit populated databases or tenant exports. The tracker may hold personal activity records and should also remain private.
+
+## Legacy platform
+
+The project targets .NET Framework 4.6.1 and ASP.NET MVC 5, which require a validated hosting environment. A build success does not establish production security or hosting compatibility. Validate the target framework, IIS configuration, database credentials, authentication provider, logging, and backups before deployment.
+
+Report vulnerabilities privately using GitHub's private vulnerability reporting feature when available.
