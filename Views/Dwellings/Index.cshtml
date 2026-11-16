@@ -1,63 +1,57 @@
-﻿@model IEnumerable<John_Baxter_Schilling.Data.Dwelling>
+@model IEnumerable<John_Baxter_Schilling.Data.Dwelling>
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Properties";
 }
 
-<h2>Index</h2>
+<div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-4">
+    <div>
+        <p class="text-uppercase text-secondary small fw-semibold mb-1">Portfolio</p>
+        <h1 class="h2 mb-1">Properties</h1>
+        <p class="text-secondary mb-0">Review property records and manage individual dwellings.</p>
+    </div>
+    @Html.ActionLink("Add property", "Create", null, new { @class = "btn btn-primary" })
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.OfficialAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LeaseRenewalDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NamesOnLease)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumberForTennet)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrimaryTennetEmailAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentMonthlyRentAmountSignedForThisDwelling)
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OfficialAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LeaseRenewalDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NamesOnLease)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumberForTennet)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrimaryTennetEmailAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentMonthlyRentAmountSignedForThisDwelling)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-</table>
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <caption class="visually-hidden">Managed properties and associated lease information</caption>
+        <thead class="table-light">
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.OfficialAddress)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.LeaseRenewalDate)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.NamesOnLease)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.PhoneNumberForTennet)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.PrimaryTennetEmailAddress)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.CurrentMonthlyRentAmountSignedForThisDwelling)</th>
+                <th scope="col"><span class="visually-hidden">Actions</span></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="fw-semibold property-address">@Html.DisplayFor(modelItem => item.OfficialAddress)</td>
+                <td>@Html.DisplayFor(modelItem => item.LeaseRenewalDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.NamesOnLease)</td>
+                <td>@Html.DisplayFor(modelItem => item.PhoneNumberForTennet)</td>
+                <td class="text-break">@Html.DisplayFor(modelItem => item.PrimaryTennetEmailAddress)</td>
+                <td>@Html.DisplayFor(modelItem => item.CurrentMonthlyRentAmountSignedForThisDwelling)</td>
+                <td class="text-nowrap">
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false"
+                                aria-label="Actions for @item.OfficialAddress">Actions</button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>@Html.ActionLink("View details", "Details", new { id = item.Id }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Edit property", "Edit", new { id = item.Id }, new { @class = "dropdown-item" })</li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>@Html.ActionLink("Delete property", "Delete", new { id = item.Id }, new { @class = "dropdown-item text-danger" })</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
