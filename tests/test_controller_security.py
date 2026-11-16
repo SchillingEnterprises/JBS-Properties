@@ -44,6 +44,24 @@ class ControllerAccessControlTests(unittest.TestCase):
                 pattern = r"(?s)\[HttpPost[^]]*\]\s*\[ValidateAntiForgeryToken\]\s*public\s+ActionResult\s+" + action + r"\b"
                 self.assertRegex(source, pattern)
 
+    def test_property_map_key_is_not_committed_to_the_view(self):
+        view = (ROOT / "Views" / "Dwellings" / "Details.cshtml").read_text(encoding="utf-8-sig")
+        self.assertNotRegex(view, r"AIza[0-9A-Za-z_-]{30,}")
+        self.assertIn("GOOGLE_MAPS_BROWSER_API_KEY", view)
+        self.assertIn('alt="Street view preview', view)
+
+    def test_property_archive_contains_no_embedded_provider_credentials(self):
+        archive = (ROOT / "App_Data" / "property.json").read_text(encoding="utf-8-sig")
+        self.assertNotRegex(archive, r"AIza[0-9A-Za-z_-]{30,}")
+        self.assertNotIn("zws-id=", archive)
+
+    def test_legacy_property_card_has_no_provider_credentials_or_invalid_model_pair(self):
+        partial = (ROOT / "Views" / "Properties" / "CardPartical.cshtml").read_text(encoding="utf-8-sig")
+        self.assertNotRegex(partial, r"AIza[0-9A-Za-z_-]{30,}")
+        self.assertNotIn("zws-id=", partial)
+        self.assertEqual(len(re.findall(r"(?m)^\s*@model\b", partial)), 1)
+        self.assertIn("GOOGLE_MAPS_BROWSER_API_KEY", partial)
+
     def test_activity_controller_remains_protected(self):
         source = (CONTROLLERS / "EntriesController.cs").read_text(encoding="utf-8-sig")
         self.assertRegex(source, r"(?m)^\s*\[Authorize\]\s*public\s+class\s+EntriesController")

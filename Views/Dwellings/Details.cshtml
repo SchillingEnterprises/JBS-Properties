@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    // Use a dedicated browser key restricted by HTTP referrer in Google Cloud.
+    // This value is intentionally not committed to source control.
+    var mapsBrowserKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_BROWSER_API_KEY");
 }
 
 <h2>Details</h2>
@@ -60,8 +63,18 @@
             @Html.DisplayFor(model => model.LeaseRenewalDate)
         </dd>
     </dl>
-    <section class="col-md-4">
-        <img src='@string.Format("https://maps.googleapis.com/maps/api/streetview?size=400x400&location={0}&key=AIzaSyDdNpQIIQNziuF5szq1DfRNKAUdNY3yNp4", Uri.EscapeUriString(Model.OfficialAddress))'>
+    <section class="col-md-4" aria-label="Property location preview">
+        @if (!String.IsNullOrWhiteSpace(mapsBrowserKey))
+        {
+            <img class="img-responsive"
+                 src="@string.Format("https://maps.googleapis.com/maps/api/streetview?size=400x400&amp;location={0}&amp;key={1}", Uri.EscapeDataString(Model.OfficialAddress), Uri.EscapeDataString(mapsBrowserKey))"
+                 alt="Street view preview of the property at @Model.OfficialAddress"
+                 loading="lazy" />
+        }
+        else
+        {
+            <p class="text-muted" role="status">Map preview is not configured for this environment.</p>
+        }
     </section>
 </div>
 

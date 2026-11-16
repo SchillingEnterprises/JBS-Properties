@@ -16,7 +16,9 @@ The property and activity controllers require an authenticated identity; POST op
 
 **Authentication still needs configuration.** The repository does not contain a verified sign-in flow or configured identity provider. Anonymous access is blocked by the controller attributes; do not remove those attributes to bypass the login gap. Configure and test a real identity provider before deploying.
 
-The database may hold tenant/contact and property financial information. Never commit populated databases or exports.
+The database may hold tenant/contact and property financial information. Never commit populated databases or exports. Review any historical property archive for authorization to publish addresses, occupancy, purchase prices, and other property-level details before making this repository broadly available.
+
+The property-details and legacy property-card map previews read `GOOGLE_MAPS_BROWSER_API_KEY` from the hosting environment and render no external map request when it is unset. The unused legacy card's invalid dual-model declaration and obsolete Zillow API link have also been removed. Configure only a dedicated Google Maps browser key with HTTP-referrer restrictions and API restrictions. A previously hard-coded key was exposed in repository history: revoke/rotate it in Google Cloud Console; removing it from the current source does not invalidate the historical credential.
 
 ## Build
 
