@@ -55,6 +55,13 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertNotRegex(archive, r"AIza[0-9A-Za-z_-]{30,}")
         self.assertNotIn("zws-id=", archive)
 
+    def test_legacy_property_card_has_no_provider_credentials_or_invalid_model_pair(self):
+        partial = (ROOT / "Views" / "Properties" / "CardPartical.cshtml").read_text(encoding="utf-8-sig")
+        self.assertNotRegex(partial, r"AIza[0-9A-Za-z_-]{30,}")
+        self.assertNotIn("zws-id=", partial)
+        self.assertEqual(len(re.findall(r"(?m)^\\s*@model\\b", partial)), 1)
+        self.assertIn("GOOGLE_MAPS_BROWSER_API_KEY", partial)
+
     def test_activity_controller_remains_protected(self):
         source = (CONTROLLERS / "EntriesController.cs").read_text(encoding="utf-8-sig")
         self.assertRegex(source, r"(?m)^\s*\[Authorize\]\s*public\s+class\s+EntriesController")
