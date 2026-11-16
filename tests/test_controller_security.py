@@ -50,6 +50,11 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertIn("GOOGLE_MAPS_BROWSER_API_KEY", view)
         self.assertIn('alt="Street view preview', view)
 
+    def test_property_archive_contains_no_embedded_provider_credentials(self):
+        archive = (ROOT / "App_Data" / "property.json").read_text(encoding="utf-8-sig")
+        self.assertNotRegex(archive, r"AIza[0-9A-Za-z_-]{30,}")
+        self.assertNotIn("zws-id=", archive)
+
     def test_activity_controller_remains_protected(self):
         source = (CONTROLLERS / "EntriesController.cs").read_text(encoding="utf-8-sig")
         self.assertRegex(source, r"(?m)^\s*\[Authorize\]\s*public\s+class\s+EntriesController")
