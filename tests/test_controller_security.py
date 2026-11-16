@@ -126,6 +126,8 @@ class BootstrapAndAccessibilityContractTests(unittest.TestCase):
         self.assertIn('aria-label="Main navigation"', layout)
         self.assertIn('data-bs-toggle="collapse"', layout)
         self.assertIn('aria-controls="primaryNavigation"', layout)
+        self.assertIn('Url.Action("Index", "PublicProperties")', layout)
+        self.assertIn('Url.Action("Index", "Dwellings")', layout)
 
     def test_property_mutation_forms_render_antiforgery_tokens(self):
         for name in ("Create.cshtml", "Edit.cshtml", "Delete.cshtml"):
