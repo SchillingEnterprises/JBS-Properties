@@ -16,9 +16,19 @@ The property and activity controllers require an authenticated identity; POST op
 
 **Authentication still needs configuration.** The repository does not contain a verified sign-in flow or configured identity provider. Anonymous access is blocked by the controller attributes; do not remove those attributes to bypass the login gap. Configure and test a real identity provider before deploying.
 
-The database may hold tenant/contact and property financial information. Never commit populated databases or exports. Review any historical property archive for authorization to publish addresses, occupancy, purchase prices, and other property-level details before making this repository broadly available.
+The property-management database may hold tenant/contact and financial information and must remain confidential. Never commit populated databases or tenant exports. The historical `App_Data/property.json` archive is intentionally public in this public repository because its selected addresses and occupancy labels are approved for disclosure. It is not a secret store and remains visible in Git history.
+
+The anonymous portfolio surface is `/PublicProperties`; its read-only JSON endpoint is `/PublicProperties/Feed`. Both read the archive server-side and expose only the explicit `Address` and `Status` allowlist. Purchase prices/dates, tenant identities/contact details, lease data, map coordinates, and third-party provider URLs are not projected into the public results. The authenticated `/Dwellings` management area remains separate. Do not add fields to the public DTO without reviewing disclosure, consent, and business impact.
 
 The property-details and legacy property-card map previews read `GOOGLE_MAPS_BROWSER_API_KEY` from the hosting environment and render no external map request when it is unset. The unused legacy card's invalid dual-model declaration and obsolete Zillow API link have also been removed. Configure only a dedicated Google Maps browser key with HTTP-referrer restrictions and API restrictions. A previously hard-coded key was exposed in repository history: revoke/rotate it in Google Cloud Console; removing it from the current source does not invalidate the historical credential.
+
+## Public property portfolio
+
+The public portfolio is a read-only projection of the approved archive. Visit `/PublicProperties` for the responsive results page or `/PublicProperties/Feed` for JSON (`schemaVersion: 1`). The feed is generated on request from `App_Data/property.json`, so approved archive edits flow into the results automatically without a paid database, API provider, or third-party integration.
+
+The public DTO is an explicit allowlist containing only address and status. The archive's legacy purchase fields, Zillow references, Street View URLs/coordinates, and any future non-allowlisted fields are never copied into the public response. The MVC management area remains authenticated and is not the public feed's data source. ASP.NET's `App_Data` directory is not directly served as static content; the controller reads it server-side and emits only the allowlisted projection.
+
+The archive itself is still visible to anyone who can browse this public GitHub repository. That is intentional for the approved public source records, not a confidentiality control. Keep tenant names, phone numbers, email addresses, lease details, database exports, credentials, and other private management information out of this repository. The feed's status is a snapshot, not a real-time vacancy guarantee.
 
 ## Build
 
