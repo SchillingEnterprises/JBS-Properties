@@ -219,6 +219,7 @@
     <Content Include="Views\Dwellings\Details.cshtml" />
     <Content Include="Views\Dwellings\Edit.cshtml" />
     <Content Include="Views\Dwellings\Index.cshtml" />
+    <Content Include="Views\Dwellings\_DwellingFormFields.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
   </ItemGroup>
