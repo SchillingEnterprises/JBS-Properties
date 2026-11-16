@@ -38,6 +38,13 @@ class ControllerAccessControlTests(unittest.TestCase):
                 )
         self.assertEqual(failures, [])
 
+    def test_root_route_and_brand_open_the_public_portfolio(self):
+        route = (ROOT / "App_Start" / "RouteConfig.cs").read_text(encoding="utf-8-sig")
+        layout = (VIEWS / "Shared" / "_Layout.cshtml").read_text(encoding="utf-8-sig")
+        self.assertIn('defaults: new { controller = "PublicProperties", action = "Index"', route)
+        self.assertIn('href="@Url.Action("Index", "PublicProperties")">JBS Properties</a>', layout)
+        self.assertIn('Url.Action("Index", "Dwellings")', layout)
+
     def test_property_controller_remains_protected(self):
         source = (CONTROLLERS / "DwellingsController.cs").read_text(encoding="utf-8-sig")
         self.assertRegex(source, r"(?m)^\s*\[Authorize\]\s*public\s+class\s+DwellingsController")
