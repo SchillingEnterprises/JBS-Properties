@@ -59,7 +59,7 @@ class ControllerAccessControlTests(unittest.TestCase):
         partial = (ROOT / "Views" / "Properties" / "CardPartical.cshtml").read_text(encoding="utf-8-sig")
         self.assertNotRegex(partial, r"AIza[0-9A-Za-z_-]{30,}")
         self.assertNotIn("zws-id=", partial)
-        self.assertEqual(len(re.findall(r"(?m)^\\s*@model\\b", partial)), 1)
+        self.assertEqual(len(re.findall(r"(?m)^\s*@model\b", partial)), 1)
         self.assertIn("GOOGLE_MAPS_BROWSER_API_KEY", partial)
 
     def test_activity_controller_remains_protected(self):
