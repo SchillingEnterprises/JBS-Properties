@@ -1,0 +1,66 @@
+@model John_Baxter_Schilling.Data.Dwelling
+
+<div class="row g-3">
+    <div class="col-12 col-md-6">
+        @Html.LabelFor(model => model.PropertyAddressNumber, new { @class = "form-label" })
+        @Html.EditorFor(model => model.PropertyAddressNumber, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PropertyAddressNumber, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12 col-md-6">
+        @Html.LabelFor(model => model.PropertyStreetName, new { @class = "form-label" })
+        @Html.EditorFor(model => model.PropertyStreetName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PropertyStreetName, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12 col-md-6">
+        @Html.LabelFor(model => model.PropertyCity, new { @class = "form-label" })
+        @Html.EditorFor(model => model.PropertyCity, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PropertyCity, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12 col-md-6">
+        @Html.LabelFor(model => model.PropertyPostalCode, new { @class = "form-label" })
+        @Html.EditorFor(model => model.PropertyPostalCode, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PropertyPostalCode, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12 col-md-6">
+        @Html.LabelFor(model => model.PropertyPurchaseAmount, new { @class = "form-label" })
+        @Html.EditorFor(model => model.PropertyPurchaseAmount, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PropertyPurchaseAmount, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12 col-md-6">
+        @Html.LabelFor(model => model.PurchaseDate, new { @class = "form-label" })
+        @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12 col-md-6">
+        @Html.LabelFor(model => model.NamesOnLease, new { @class = "form-label" })
+        @Html.EditorFor(model => model.NamesOnLease, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.NamesOnLease, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12 col-md-6">
+        @Html.LabelFor(model => model.PhoneNumberForTennet, new { @class = "form-label" })
+        @Html.EditorFor(model => model.PhoneNumberForTennet, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PhoneNumberForTennet, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12">
+        @Html.LabelFor(model => model.PrimaryTennetEmailAddress, new { @class = "form-label" })
+        @Html.EditorFor(model => model.PrimaryTennetEmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PrimaryTennetEmailAddress, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12 col-md-6">
+        @Html.LabelFor(model => model.LeaseRenewalDate, new { @class = "form-label" })
+        @Html.EditorFor(model => model.LeaseRenewalDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.LeaseRenewalDate, "", new { @class = "text-danger small" })
+    </div>
+    <div class="col-12 col-md-6 d-flex flex-wrap gap-4 align-items-end">
+        <div class="form-check">
+            @Html.EditorFor(model => model.Availability, new { htmlAttributes = new { @class = "form-check-input" } })
+            @Html.LabelFor(model => model.Availability, new { @class = "form-check-label" })
+            @Html.ValidationMessageFor(model => model.Availability, "", new { @class = "text-danger small d-block" })
+        </div>
+        <div class="form-check">
+            @Html.EditorFor(model => model.CurrentlyRented, new { htmlAttributes = new { @class = "form-check-input" } })
+            @Html.LabelFor(model => model.CurrentlyRented, new { @class = "form-check-label" })
+            @Html.ValidationMessageFor(model => model.CurrentlyRented, "", new { @class = "text-danger small d-block" })
+        </div>
+    </div>
+</div>
