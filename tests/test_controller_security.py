@@ -72,6 +72,10 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertRegex(source, r"(?s)\[AllowAnonymous\]\s*public\s+ActionResult\s+Index")
         self.assertRegex(source, r"(?s)\[AllowAnonymous\]\s*public\s+JsonResult\s+Feed")
         self.assertIn('Server.MapPath("~/App_Data/property.json")', source)
+        self.assertIn('Environment.GetEnvironmentVariable("JBS_PROPERTY_DATA_PATH")', source)
+        self.assertIn("Path.IsPathRooted(configuredPath)", source)
+        self.assertIn("Path.GetFullPath(configuredPath)", source)
+        self.assertIn("archivePath.StartsWith(webRoot, StringComparison.OrdinalIgnoreCase)", source)
         self.assertIn("JsonRequestBehavior.AllowGet", source)
         self.assertIn("Response.Cache.SetMaxAge(TimeSpan.FromMinutes(5))", source)
 
