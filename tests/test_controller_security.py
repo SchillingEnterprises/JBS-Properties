@@ -118,6 +118,20 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertIn("@property.Address", view)
         self.assertIn("@property.Status", view)
 
+    def test_public_archive_records_are_valid_and_feed_status_is_not_claimed_live(self):
+        import json
+
+        archive = json.loads((ROOT / "App_Data" / "property.json").read_text(encoding="utf-8-sig"))
+        self.assertIsInstance(archive.get("rental"), list)
+        for record in archive["rental"]:
+            self.assertTrue(record.get("address", "").strip())
+            self.assertTrue(record.get("status", "").strip())
+
+        view = (ROOT / "Views" / "PublicProperties" / "Index.cshtml").read_text(encoding="utf-8-sig")
+        self.assertIn("may not reflect real-time availability", view)
+        self.assertIn("@property.Address", view)
+        self.assertIn("@property.Status", view)
+
     def test_activity_controller_remains_protected(self):
         source = (CONTROLLERS / "EntriesController.cs").read_text(encoding="utf-8-sig")
         self.assertRegex(source, r"(?m)^\s*\[Authorize\]\s*public\s+class\s+EntriesController")
