@@ -180,3 +180,18 @@ class BootstrapAndAccessibilityContractTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+    def test_public_portfolio_fails_closed_when_its_source_is_unavailable_or_invalid(self):
+        source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
+        index_action = source.split("public ActionResult Index()", 1)[1].split("public JsonResult Feed()", 1)[0]
+        feed_action = source.split("public JsonResult Feed()", 1)[1].split("private JsonResult FeedUnavailable()", 1)[0]
+        failure_response = source.split("private JsonResult FeedUnavailable()", 1)[1].split("private IList<PublicPropertyListing>", 1)[0]
+        for action_name, action in (("Index", index_action), ("Feed", feed_action)):
+            with self.subTest(action=action_name):
+                for exception in ("IOException", "UnauthorizedAccessException", "JsonException", "InvalidDataException"):
+                    self.assertIn("catch (" + exception + ")", action)
+        self.assertIn("return new HttpStatusCodeResult(503", index_action)
+        self.assertIn("return FeedUnavailable()", feed_action)
+        self.assertIn("Response.StatusCode = 503", failure_response)
+        self.assertIn('error = "Public property data is temporarily unavailable."', failure_response)
+        self.assertNotIn("Exception.Message", failure_response)
