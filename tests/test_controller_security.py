@@ -178,10 +178,6 @@ class BootstrapAndAccessibilityContractTests(unittest.TestCase):
         self.assertIn('class="btn btn-danger"', source)
 
 
-if __name__ == "__main__":
-    unittest.main(verbosity=2)
-
-
 class PublicPortfolioFailureBoundaryTests(unittest.TestCase):
     def test_public_portfolio_fails_closed_when_its_source_is_unavailable_or_invalid(self):
         source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
@@ -197,3 +193,7 @@ class PublicPortfolioFailureBoundaryTests(unittest.TestCase):
         self.assertIn("Response.StatusCode = 503", failure_response)
         self.assertIn('error = "Public property data is temporarily unavailable."', failure_response)
         self.assertNotIn("Exception.Message", failure_response)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
