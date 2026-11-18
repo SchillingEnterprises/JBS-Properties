@@ -181,6 +181,8 @@ class BootstrapAndAccessibilityContractTests(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 
+
+class PublicPortfolioFailureBoundaryTests(unittest.TestCase):
     def test_public_portfolio_fails_closed_when_its_source_is_unavailable_or_invalid(self):
         source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
         index_action = source.split("public ActionResult Index()", 1)[1].split("public JsonResult Feed()", 1)[0]
