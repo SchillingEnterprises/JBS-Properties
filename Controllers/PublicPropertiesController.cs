@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using John_Baxter_Schilling.Models;
@@ -14,6 +15,10 @@ namespace John_Baxter_Schilling.Controllers
     [Authorize]
     public class PublicPropertiesController : Controller
     {
+        private const long MaxArchiveBytes = 5 * 1024 * 1024;
+        private const int MaxPublicListings = 1000;
+        private const int MaxAddressLength = 250;
+        private const int MaxStatusLength = 80;
         [AllowAnonymous]
         public ActionResult Index()
         {
@@ -112,6 +117,12 @@ namespace John_Baxter_Schilling.Controllers
                 }
             }
 
+            var sourceFile = new FileInfo(archivePath);
+            if (sourceFile.Exists && sourceFile.Length > MaxArchiveBytes)
+            {
+                throw new InvalidDataException("The property archive exceeds the permitted file size.");
+            }
+
             var archive = JObject.Parse(System.IO.File.ReadAllText(archivePath));
             var rentalRows = archive["rental"] as JArray;
             if (rentalRows == null)
@@ -119,35 +130,56 @@ namespace John_Baxter_Schilling.Controllers
                 throw new InvalidDataException("The property archive must contain a rental array.");
             }
 
-            var listings = new List<PublicPropertyListing>();
+            if (rentalRows.Count > MaxPublicListings)
+            {
+                throw new InvalidDataException("The property archive contains too many public records.");
+            }
+
+            var listings = new List<PublicPropertyListing>(rentalRows.Count);
             foreach (var token in rentalRows)
             {
                 var row = token as JObject;
-                var addressToken = row == null ? null : row["address"];
-                var statusToken = row == null ? null : row["status"];
-                if (addressToken == null || addressToken.Type != JTokenType.String
-                    || statusToken == null || statusToken.Type != JTokenType.String)
+                if (row == null)
                 {
-                    throw new InvalidDataException("Every public property record requires string address and status values.");
+                    throw new InvalidDataException("Every public property record must be an object.");
                 }
 
-                var address = addressToken.Value<string>();
-                var status = statusToken.Value<string>();
-                if (String.IsNullOrWhiteSpace(address) || String.IsNullOrWhiteSpace(status))
-                {
-                    throw new InvalidDataException("Every public property record requires an address and status.");
-                }
+                var address = ReadRequiredText(row, "address", MaxAddressLength);
+                var status = ReadRequiredText(row, "status", MaxStatusLength);
 
                 // Deliberately do not serialize purchase data, tenant details,
                 // lease information, provider URLs, map coordinates, or source metadata.
                 listings.Add(new PublicPropertyListing
                 {
-                    Address = address.Trim(),
-                    Status = status.Trim()
+                    Address = address,
+                    Status = status
                 });
             }
 
             return listings;
+        }
+
+        private static string ReadRequiredText(JObject row, string field, int maximumLength)
+        {
+            var token = row[field];
+            if (token == null || token.Type != JTokenType.String)
+            {
+                throw new InvalidDataException("Every public property record requires string address and status values.");
+            }
+
+            var value = token.Value<string>();
+            if (String.IsNullOrWhiteSpace(value))
+            {
+                throw new InvalidDataException("Every public property record requires an address and status.");
+            }
+
+            var normalized = value.Trim();
+            if (normalized.Length > maximumLength || normalized.Any(Char.IsControl))
+            {
+                throw new InvalidDataException("A public property field exceeds the permitted format or length.");
+            }
+
+            return normalized;
         }
     }
 }

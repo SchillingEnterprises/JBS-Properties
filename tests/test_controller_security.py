@@ -117,17 +117,19 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertIn("JsonRequestBehavior.AllowGet", source)
         self.assertIn("Response.Cache.SetMaxAge(TimeSpan.FromMinutes(5))", source)
         self.assertEqual(source.count("catch (UnauthorizedAccessException)"), 2)
-        self.assertIn("addressToken.Type != JTokenType.String", source)
-        self.assertIn("statusToken.Type != JTokenType.String", source)
-        self.assertIn("addressToken.Value<string>()", source)
-        self.assertIn("statusToken.Value<string>()", source)
+        self.assertIn('ReadRequiredText(row, "address", MaxAddressLength)', source)
+        self.assertIn('ReadRequiredText(row, "status", MaxStatusLength)', source)
+        self.assertIn("token.Type != JTokenType.String", source)
+        self.assertIn("normalized.Any(Char.IsControl)", source)
 
     def test_public_projection_is_an_explicit_two_field_allowlist(self):
         source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
         model = (ROOT / "Models" / "PublicPropertyListing.cs").read_text(encoding="utf-8-sig")
         view = (ROOT / "Views" / "PublicProperties" / "Index.cshtml").read_text(encoding="utf-8-sig")
-        self.assertIn("Address = address.Trim()", source)
-        self.assertIn("Status = status.Trim()", source)
+        self.assertIn("Address = address", source)
+        self.assertIn("Status = status", source)
+        self.assertIn('public string Address { get; set; }', model)
+        self.assertIn('public string Status { get; set; }', model)
         self.assertNotIn('row["purchase-price"]', source)
         self.assertNotIn('row["purchase-date"]', source)
         self.assertNotIn('row["zestimate"]', source)
@@ -230,6 +232,19 @@ class PublicPortfolioFailureBoundaryTests(unittest.TestCase):
         self.assertIn("Response.StatusCode = 503", failure_response)
         self.assertIn('error = "Public property data is temporarily unavailable."', failure_response)
         self.assertNotIn("Exception.Message", failure_response)
+
+    def test_public_property_archive_has_bounded_input_and_text_fields(self):
+        source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
+        self.assertIn("MaxArchiveBytes = 5 * 1024 * 1024", source)
+        self.assertIn("MaxPublicListings = 1000", source)
+        self.assertIn("MaxAddressLength = 250", source)
+        self.assertIn("MaxStatusLength = 80", source)
+        self.assertIn("sourceFile.Length > MaxArchiveBytes", source)
+        self.assertIn("rentalRows.Count > MaxPublicListings", source)
+        self.assertIn("normalized.Any(Char.IsControl)", source)
+        self.assertIn("ReadRequiredText(row, \"address\", MaxAddressLength)", source)
+        self.assertIn("ReadRequiredText(row, \"status\", MaxStatusLength)", source)
+        self.assertIn("new List<PublicPropertyListing>(rentalRows.Count)", source)
 
 
 if __name__ == "__main__":
