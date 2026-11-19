@@ -6,7 +6,7 @@ A legacy ASP.NET MVC / Entity Framework application for property records, accomp
 
 - Property management: dwelling details, availability/rental status, purchase information, tenant contact information, and lease dates.
 - Fitness Frog sample: activity entries, duration, intensity, exclusion flag, and notes.
-- ASP.NET MVC 5 / Entity Framework 6 application targeting .NET Framework 4.6.1.
+- ASP.NET MVC 5 / Entity Framework 6 application targeting .NET Framework 4.8 (upgraded from unsupported 4.6.1).
 
 These are distinct application concerns retained in one historical repository. They have not been split or rewritten, to preserve their source and history.
 
@@ -32,7 +32,7 @@ When `JBS_PROPERTY_DATA_PATH` is configured, the canonical source can include ap
 
 ## Build
 
-Use Visual Studio/MSBuild on Windows with the .NET Framework 4.6.1 targeting references. The repository's CI workflow restores packages and compiles the application in Release configuration.
+Use Visual Studio/MSBuild on Windows with the .NET Framework 4.8 targeting references. The repository's CI workflow restores packages and compiles the application in Release configuration.
 
 ```powershell
 nuget restore JBS_Properties.sln
@@ -52,7 +52,7 @@ It guards the existing class-level authorization on the property and Fitness Fro
 
 ## Modernization status
 
-This is a legacy .NET Framework application, not a new .NET 8/10 ASP.NET Core project. The first step is a safe build baseline and access-control hardening. A migration to a supported runtime should be staged with verified authentication, database backup/migration strategy, and integration tests rather than an in-place framework-number change.
+This remains a legacy ASP.NET MVC / .NET Framework application, not a new .NET 8/10 ASP.NET Core project. Its target has been raised to .NET Framework 4.8, a supported in-place framework release. A future ASP.NET Core migration is a separate project that must preserve authentication boundaries, property data contracts, and the distinct Fitness Frog sample; it should be staged with verified authentication, backups, and integration tests rather than mixed into this framework retarget.
 
 
 ## Front-end stack
