@@ -29,7 +29,7 @@ jobs:
         run: python -m unittest discover -s tests -v
 
   build:
-    name: Restore and build (.NET Framework 4.6.1)
+    name: Restore and build (.NET Framework 4.8)
     runs-on: windows-2022
     timeout-minutes: 30
     steps:
@@ -46,9 +46,9 @@ jobs:
       - name: Verify .NET Framework reference assemblies were restored
         shell: pwsh
         run: |
-          $referenceTargets = "packages\\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.3\\build\\Microsoft.NETFramework.ReferenceAssemblies.net461.targets"
+          $referenceTargets = "packages\\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\\build\\Microsoft.NETFramework.ReferenceAssemblies.net48.targets"
           if (-not (Test-Path $referenceTargets)) {
-            throw "The .NET Framework 4.6.1 reference-assemblies target file was not restored."
+            throw "The .NET Framework 4.8 reference-assemblies target file was not restored."
           }
 
       - name: Build solution in Release configuration

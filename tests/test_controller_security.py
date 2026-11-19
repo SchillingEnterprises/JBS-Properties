@@ -2,6 +2,7 @@
 from pathlib import Path
 import re
 import unittest
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTROLLERS = ROOT / "Controllers"
@@ -10,6 +11,25 @@ DWELLING_VIEWS = VIEWS / "Dwellings"
 
 
 class ControllerAccessControlTests(unittest.TestCase):
+    def test_solution_targets_supported_dotnet_framework_48(self):
+        project = (ROOT / "JBS_Properties.csproj").read_text(encoding="utf-8-sig")
+        self.assertIn("<TargetFrameworkVersion>v4.8</TargetFrameworkVersion>", project)
+        self.assertIn("Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3", project)
+        self.assertNotIn("<TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>", project)
+
+        packages = ET.parse(ROOT / "packages.config").getroot()
+        self.assertTrue(packages.findall("package"))
+        self.assertTrue(all(item.attrib.get("targetFramework") == "net48" for item in packages))
+        reference_package = [
+            item for item in packages
+            if item.attrib.get("id") == "Microsoft.NETFramework.ReferenceAssemblies.net48"
+        ]
+        self.assertEqual(len(reference_package), 1)
+
+        workflow = (ROOT / ".github" / "workflows" / "dotnet.yml").read_text(encoding="utf-8")
+        self.assertIn(".NET Framework 4.8", workflow)
+        self.assertIn("Microsoft.NETFramework.ReferenceAssemblies.net48.targets", workflow)
+
     def test_every_controller_requires_authentication_by_default(self):
         files = sorted(CONTROLLERS.glob("*Controller.cs"))
         self.assertTrue(files, "Expected the application controllers to be present")
