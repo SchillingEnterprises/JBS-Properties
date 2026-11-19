@@ -30,6 +30,17 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertIn(".NET Framework 4.8", workflow)
         self.assertIn("Microsoft.NETFramework.ReferenceAssemblies.net48.targets", workflow)
 
+    def test_web_config_matches_net48_and_newtonsoft_13(self):
+        config = ET.parse(ROOT / "Web.config").getroot()
+        compilation = config.find("./system.web/compilation")
+        runtime = config.find("./system.web/httpRuntime")
+        self.assertEqual(compilation.attrib.get("targetFramework"), "4.8")
+        self.assertEqual(compilation.attrib.get("debug"), "false")
+        self.assertEqual(runtime.attrib.get("targetFramework"), "4.8")
+
+        source = (ROOT / "Web.config").read_text(encoding="utf-8-sig")
+        self.assertIn('oldVersion="0.0.0.0-13.0.0.0" newVersion="13.0.0.0"', source)
+
     def test_every_controller_requires_authentication_by_default(self):
         files = sorted(CONTROLLERS.glob("*Controller.cs"))
         self.assertTrue(files, "Expected the application controllers to be present")
