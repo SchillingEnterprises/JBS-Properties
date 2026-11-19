@@ -20,6 +20,6 @@ The anonymous `/PublicProperties` page and `/PublicProperties/Feed` endpoint exp
 
 ## Legacy platform
 
-The project targets .NET Framework 4.6.1 and ASP.NET MVC 5, which require a validated hosting environment. A build success does not establish production security or hosting compatibility. Validate the target framework, IIS configuration, database credentials, authentication provider, logging, and backups before deployment.
+The project targets .NET Framework 4.8 and ASP.NET MVC 5. Validate the Windows/IIS hosting environment, installed .NET Framework 4.8 runtime, database credentials, authentication provider, logging, and backups before deployment. A build success does not establish production security or hosting compatibility. Validate the target framework, IIS configuration, database credentials, authentication provider, logging, and backups before deployment.
 
 Report vulnerabilities privately using GitHub's private vulnerability reporting feature when available.
