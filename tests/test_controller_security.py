@@ -108,24 +108,16 @@ class ControllerAccessControlTests(unittest.TestCase):
 
     def test_public_archive_records_are_valid_and_feed_status_is_not_claimed_live(self):
         import json
-        archive = json.loads((ROOT / "App_Data" / "property.json").read_text(encoding="utf-8-sig"))
-        self.assertIsInstance(archive.get("rental"), list)
-        for record in archive["rental"]:
-            self.assertTrue(record.get("address", "").strip())
-            self.assertTrue(record.get("status", "").strip())
-        view = (ROOT / "Views" / "PublicProperties" / "Index.cshtml").read_text(encoding="utf-8-sig")
-        self.assertIn("may not reflect real-time availability", view)
-        self.assertIn("@property.Address", view)
-        self.assertIn("@property.Status", view)
-
-    def test_public_archive_records_are_valid_and_feed_status_is_not_claimed_live(self):
-        import json
 
         archive = json.loads((ROOT / "App_Data" / "property.json").read_text(encoding="utf-8-sig"))
         self.assertIsInstance(archive.get("rental"), list)
         for record in archive["rental"]:
-            self.assertTrue(record.get("address", "").strip())
-            self.assertTrue(record.get("status", "").strip())
+            with self.subTest(record_type=type(record).__name__):
+                self.assertIsInstance(record, dict)
+                self.assertIsInstance(record.get("address"), str)
+                self.assertTrue(record["address"].strip())
+                self.assertIsInstance(record.get("status"), str)
+                self.assertTrue(record["status"].strip())
 
         view = (ROOT / "Views" / "PublicProperties" / "Index.cshtml").read_text(encoding="utf-8-sig")
         self.assertIn("may not reflect real-time availability", view)
