@@ -231,6 +231,19 @@ class PublicPortfolioFailureBoundaryTests(unittest.TestCase):
         self.assertIn('error = "Public property data is temporarily unavailable."', failure_response)
         self.assertNotIn("Exception.Message", failure_response)
 
+    def test_public_property_archive_has_bounded_input_and_text_fields(self):
+        source = (CONTROLLERS / "PublicPropertiesController.cs").read_text(encoding="utf-8-sig")
+        self.assertIn("MaxArchiveBytes = 5 * 1024 * 1024", source)
+        self.assertIn("MaxPublicListings = 1000", source)
+        self.assertIn("MaxAddressLength = 250", source)
+        self.assertIn("MaxStatusLength = 80", source)
+        self.assertIn("sourceFile.Length > MaxArchiveBytes", source)
+        self.assertIn("rentalRows.Count > MaxPublicListings", source)
+        self.assertIn("normalized.Any(Char.IsControl)", source)
+        self.assertIn("ReadRequiredText(row, \"address\", MaxAddressLength)", source)
+        self.assertIn("ReadRequiredText(row, \"status\", MaxStatusLength)", source)
+        self.assertIn("new List<PublicPropertyListing>(rentalRows.Count)", source)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
