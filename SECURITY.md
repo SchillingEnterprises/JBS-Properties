@@ -23,3 +23,8 @@ The anonymous `/PublicProperties` page and `/PublicProperties/Feed` endpoint exp
 The project targets .NET Framework 4.8 and ASP.NET MVC 5. Validate the Windows/IIS hosting environment, installed .NET Framework 4.8 runtime, database credentials, authentication provider, logging, and backups before deployment. A build success does not establish production security or hosting compatibility. Validate the target framework, IIS configuration, database credentials, authentication provider, logging, and backups before deployment.
 
 Report vulnerabilities privately using GitHub's private vulnerability reporting feature when available.
+
+
+## Historical provider credentials
+
+A Google Maps API key was previously committed to repository history. Treat that historical value as exposed and revoke/rotate it with Google Cloud before any deployment that uses Maps. Restrict any replacement to the required Maps APIs, approved referrers, and an appropriate quota, and store it only in the hosting secret manager. The current default-branch `Web.config` contains no Google API key literal; removing it from the current tree does not revoke the historical credential.
