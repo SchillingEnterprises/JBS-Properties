@@ -58,16 +58,16 @@ jobs:
           $solutionPackages = (Resolve-Path ".\packages").Path
           $parentPackages = Join-Path (Split-Path (Get-Location).Path -Parent) "packages"
           if (Test-Path $parentPackages) {
-            $existing = (Resolve-Path $parentPackages).Path
-            if ($existing -ne $solutionPackages) {
-              throw "The legacy package path already exists but does not point to the restored solution packages directory."
+            $existingItem = Get-Item -LiteralPath $parentPackages -Force
+            if (($existingItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -eq 0) {
+              throw "The legacy package path exists but is not a directory junction."
             }
           } else {
             New-Item -ItemType Junction -Path $parentPackages -Target $solutionPackages | Out-Null
           }
-          $resolved = (Resolve-Path $parentPackages).Path
-          if ($resolved -ne $solutionPackages) {
-            throw "The legacy NuGet package path did not resolve to the restored packages directory."
+          $sentinel = Join-Path $parentPackages "Antlr.3.5.0.2\lib\Antlr3.Runtime.dll"
+          if (-not (Test-Path -LiteralPath $sentinel)) {
+            throw "The legacy package path cannot access restored solution packages."
           }
 
       - name: Build solution in Release configuration
