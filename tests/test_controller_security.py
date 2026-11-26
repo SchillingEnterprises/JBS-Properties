@@ -41,6 +41,35 @@ class ControllerAccessControlTests(unittest.TestCase):
         source = (ROOT / "Web.config").read_text(encoding="utf-8-sig")
         self.assertIn('oldVersion="0.0.0.0-13.0.0.0" newVersion="13.0.0.0"', source)
 
+
+    def test_web_config_binding_redirects_match_referenced_assembly_versions(self):
+        project = ET.parse(ROOT / "JBS_Properties.csproj").getroot()
+        project_ns = {"msbuild": "http://schemas.microsoft.com/developer/msbuild/2003"}
+        references = {}
+        for reference in project.findall(".//msbuild:Reference", project_ns):
+            include = reference.attrib.get("Include", "")
+            parts = [part.strip() for part in include.split(",")]
+            if len(parts) > 1 and parts[1].startswith("Version="):
+                references[parts[0]] = parts[1].split("=", 1)[1]
+
+        config = ET.parse(ROOT / "Web.config").getroot()
+        assembly_ns = "{urn:schemas-microsoft-com:asm.v1}"
+        redirects = {}
+        for assembly in config.findall(".//" + assembly_ns + "dependentAssembly"):
+            identity = assembly.find(assembly_ns + "assemblyIdentity")
+            redirect = assembly.find(assembly_ns + "bindingRedirect")
+            if identity is not None and redirect is not None:
+                redirects[identity.attrib.get("name")] = redirect.attrib.get("newVersion")
+
+        for assembly_name in (
+            "System.Diagnostics.DiagnosticSource",
+            "System.Web.Mvc",
+            "Newtonsoft.Json",
+        ):
+            with self.subTest(assembly=assembly_name):
+                self.assertIn(assembly_name, references)
+                self.assertEqual(redirects.get(assembly_name), references[assembly_name])
+
     def test_every_controller_requires_authentication_by_default(self):
         files = sorted(CONTROLLERS.glob("*Controller.cs"))
         self.assertTrue(files, "Expected the application controllers to be present")
