@@ -52,6 +52,24 @@ jobs:
             throw "The .NET Framework 4.8 reference-assemblies target file was not restored."
           }
 
+      - name: Create compatibility path for legacy NuGet imports
+        shell: pwsh
+        run: |
+          $solutionPackages = (Resolve-Path ".\packages").Path
+          $parentPackages = Join-Path (Split-Path (Get-Location).Path -Parent) "packages"
+          if (Test-Path $parentPackages) {
+            $existingItem = Get-Item -LiteralPath $parentPackages -Force
+            if (($existingItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -eq 0) {
+              throw "The legacy package path exists but is not a directory junction."
+            }
+          } else {
+            New-Item -ItemType Junction -Path $parentPackages -Target $solutionPackages | Out-Null
+          }
+          $sentinel = Join-Path $parentPackages "Antlr.3.5.0.2\lib\Antlr3.Runtime.dll"
+          if (-not (Test-Path -LiteralPath $sentinel)) {
+            throw "The legacy package path cannot access restored solution packages."
+          }
+
       - name: Build solution in Release configuration
         shell: pwsh
         run: msbuild .\JBS_Properties.sln /m /p:Configuration=Release /p:ContinuousIntegrationBuild=true /verbosity:minimal
