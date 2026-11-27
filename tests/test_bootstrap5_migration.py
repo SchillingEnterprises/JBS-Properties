@@ -44,6 +44,8 @@ class BootstrapMigrationTests(unittest.TestCase):
             with self.subTest(pattern=pattern):
                 self.assertEqual(list((ROOT / "Scripts").glob(pattern)), [])
 
+        self.assertEqual(list((ROOT / "Scripts").glob("bootstrap*.js")), [])
+
         view_usage = "\n".join(
             path.read_text(encoding="utf-8-sig")
             for path in (ROOT / "Views").rglob("*.cshtml")
