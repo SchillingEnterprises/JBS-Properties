@@ -55,6 +55,12 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertIn('oldVersion="0.0.0.0-13.0.0.0" newVersion="13.0.0.0"', source)
 
 
+    def test_help_page_web_config_disables_debug_compilation(self):
+        config = ET.parse(ROOT / "Areas" / "HelpPage" / "Views" / "Web.config").getroot()
+        compilation = config.find("./system.web/compilation")
+        self.assertIsNotNone(compilation)
+        self.assertEqual(compilation.attrib.get("debug"), "false")
+
     def test_web_config_binding_redirects_match_referenced_assembly_versions(self):
         project = ET.parse(ROOT / "JBS_Properties.csproj").getroot()
         project_ns = {"msbuild": "http://schemas.microsoft.com/developer/msbuild/2003"}
