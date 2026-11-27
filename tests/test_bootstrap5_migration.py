@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class BootstrapMigrationTests(unittest.TestCase):
     def test_layout_uses_pinned_bootstrap_539_with_integrity(self):
+        layout = (ROOT / "Views/Shared/_Layout.cshtml").read_text(encoding="utf-8-sig")
         self.assertIn("bootstrap@5.3.9/dist/css/bootstrap.min.css", layout)
         self.assertIn("bootstrap@5.3.9/dist/js/bootstrap.bundle.min.js", layout)
         self.assertIn("integrity=", layout)
@@ -39,7 +40,6 @@ class BootstrapMigrationTests(unittest.TestCase):
             for package in packages
         ))
         self.assertNotRegex(project, r"(?i)Scripts\\(?:jquery-|modernizr|respond)")
-        layout = (ROOT / "Views/Shared/_Layout.cshtml").read_text(encoding="utf-8-sig")
         self.assertIn("bootstrap@5.3.9/dist/css/bootstrap.min.css", layout)
         self.assertIn("bootstrap@5.3.9/dist/js/bootstrap.bundle.min.js", layout)
         self.assertEqual(list((ROOT / "Content").glob("bootstrap*")), [])
