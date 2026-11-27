@@ -37,14 +37,14 @@ class BootstrapMigrationTests(unittest.TestCase):
             package.attrib.get("id", "").lower() == "jquery"
             for package in packages
         ))
-        self.assertNotIn("Scripts\\\\jquery-", project)
+        self.assertNotIn("Scripts\\jquery-", project)
         self.assertEqual(list((ROOT / "Scripts").glob("jquery-*")), [])
 
-        view_usage = "\\n".join(
+        view_usage = "\n".join(
             path.read_text(encoding="utf-8-sig")
             for path in (ROOT / "Views").rglob("*.cshtml")
         )
-        self.assertNotRegex(view_usage, r"(?i)\\bjQuery\\b|\\$\\s*\\(")
+        self.assertNotRegex(view_usage, r"(?i)\bjQuery\b|\$\s*\(")
 
     def test_property_views_use_bootstrap_five_patterns(self):
         index = (ROOT / "Views/Dwellings/Index.cshtml").read_text(encoding="utf-8-sig")
