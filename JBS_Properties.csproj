@@ -424,11 +424,6 @@
     <None Include="Data\GoogleAnalytics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="Scripts\jquery-3.2.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.2.1.js" />
-    <Content Include="Scripts\jquery-3.2.1.min.js" />
-    <Content Include="Scripts\jquery-3.2.1.slim.js" />
-    <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
     <Content Include="Views\Dwellings\Create.cshtml" />
     <Content Include="Views\Dwellings\Delete.cshtml" />
     <Content Include="Views\Dwellings\Details.cshtml" />
@@ -436,8 +431,6 @@
     <Content Include="Views\Dwellings\Index.cshtml" />
     <Content Include="Views\Dwellings\_DwellingFormFields.cshtml" />
     <Content Include="Views\PublicProperties\Index.cshtml" />
-    <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -467,14 +460,6 @@
     </Content>
     <Content Include="App_Data\property.json" />
     <None Include="Properties\PublishProfiles\JBS-Properties - Web Deploy.pubxml" />
-    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.1.1.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
-    <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -25,6 +25,33 @@ class BootstrapMigrationTests(unittest.TestCase):
         self.assertNotIn("~/bundles/bootstrap", bundles)
         self.assertIn("~/Content/Site.css", bundles)
 
+    def test_unused_legacy_browser_runtime_and_assets_are_removed(self):
+        """Bootstrap 5 and the current MVC views do not need legacy browser libraries."""
+        layout = (ROOT / "Views/Shared/_Layout.cshtml").read_text(encoding="utf-8-sig")
+        bundles = (ROOT / "App_Start/BundleConfig.cs").read_text(encoding="utf-8-sig")
+        packages = ET.parse(ROOT / "packages.config").getroot()
+        project = (ROOT / "JBS_Properties.csproj").read_text(encoding="utf-8-sig")
+
+        self.assertNotIn("~/bundles/jquery", layout + bundles)
+        self.assertNotIn("~/bundles/modernizr", layout + bundles)
+        excluded_packages = {"jquery", "modernizr", "respond"}
+        self.assertFalse(any(
+            package.attrib.get("id", "").lower() in excluded_packages
+            for package in packages
+        ))
+        self.assertNotRegex(project, r"(?i)Scripts\\(?:jquery-|modernizr|respond)")
+        for pattern in ("jquery-*", "modernizr-*", "respond*"):
+            with self.subTest(pattern=pattern):
+                self.assertEqual(list((ROOT / "Scripts").glob(pattern)), [])
+
+        self.assertEqual(list((ROOT / "Scripts").glob("bootstrap*.js")), [])
+
+        view_usage = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in (ROOT / "Views").rglob("*.cshtml")
+        )
+        self.assertNotRegex(view_usage, r"(?i)\bjQuery\b|\$\s*\(")
+
     def test_property_views_use_bootstrap_five_patterns(self):
         index = (ROOT / "Views/Dwellings/Index.cshtml").read_text(encoding="utf-8-sig")
         create = (ROOT / "Views/Dwellings/Create.cshtml").read_text(encoding="utf-8-sig")
