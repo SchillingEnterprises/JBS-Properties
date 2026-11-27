@@ -30,6 +30,19 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertIn(".NET Framework 4.8", workflow)
         self.assertIn("Microsoft.NETFramework.ReferenceAssemblies.net48.targets", workflow)
 
+    def test_unused_restsharp_package_is_not_restored_or_referenced(self):
+        project = ET.parse(ROOT / "JBS_Properties.csproj").getroot()
+        project_ns = {"msbuild": "http://schemas.microsoft.com/developer/msbuild/2003"}
+        references = {
+            reference.attrib.get("Include", "").split(",", 1)[0]
+            for reference in project.findall(".//msbuild:Reference", project_ns)
+        }
+        packages = ET.parse(ROOT / "packages.config").getroot()
+        package_ids = {package.attrib.get("id") for package in packages.findall("package")}
+
+        self.assertNotIn("RestSharp", references)
+        self.assertNotIn("RestSharp", package_ids)
+
     def test_web_config_matches_net48_and_newtonsoft_13(self):
         config = ET.parse(ROOT / "Web.config").getroot()
         compilation = config.find("./system.web/compilation")
