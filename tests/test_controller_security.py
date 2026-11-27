@@ -30,6 +30,28 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertIn(".NET Framework 4.8", workflow)
         self.assertIn("Microsoft.NETFramework.ReferenceAssemblies.net48.targets", workflow)
 
+    def test_restored_nuget_payloads_are_not_committed(self):
+        """Keep generated NuGet package contents out of Git; restore from packages.config."""
+        import subprocess
+
+        tracked = subprocess.run(
+            ["git", "ls-files", "--", "packages"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+        self.assertEqual(tracked, [])
+
+        ignore = (ROOT / ".gitignore").read_text(encoding="utf-8-sig")
+        workflow = (ROOT / ".github" / "workflows" / "dotnet.yml").read_text(encoding="utf-8")
+        self.assertIn("**/packages/*", ignore)
+        self.assertIn("!**/packages/build/", ignore)
+        self.assertIn("nuget restore .\\JBS_Properties.sln -NonInteractive", workflow)
+        package_manifest = ROOT / "packages.config"
+        self.assertTrue(package_manifest.is_file())
+        self.assertTrue(ET.parse(package_manifest).getroot().findall("package"))
+
     def test_unused_restsharp_package_is_not_restored_or_referenced(self):
         project = ET.parse(ROOT / "JBS_Properties.csproj").getroot()
         project_ns = {"msbuild": "http://schemas.microsoft.com/developer/msbuild/2003"}
