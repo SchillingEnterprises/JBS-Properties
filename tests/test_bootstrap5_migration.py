@@ -40,6 +40,19 @@ class BootstrapMigrationTests(unittest.TestCase):
             for package in packages
         ))
         self.assertNotRegex(project, r"(?i)Scripts\\(?:jquery-|modernizr|respond)")
+        layout = (ROOT / "Views/Shared/_Layout.cshtml").read_text(encoding="utf-8-sig")
+        self.assertIn("bootstrap@5.3.9/dist/css/bootstrap.min.css", layout)
+        self.assertIn("bootstrap@5.3.9/dist/js/bootstrap.bundle.min.js", layout)
+        self.assertEqual(list((ROOT / "Content").glob("bootstrap*")), [])
+        for package_directory in (
+            "packages/Modernizr.2.8.3",
+            "packages/Respond.1.4.2",
+            "packages/bootstrap.3.3.7",
+        ):
+            with self.subTest(package_directory=package_directory):
+                self.assertFalse((ROOT / package_directory).exists())
+        self.assertNotRegex(project, r"(?i)Content\\bootstrap")
+
         for pattern in ("jquery-*", "modernizr-*", "respond*"):
             with self.subTest(pattern=pattern):
                 self.assertEqual(list((ROOT / "Scripts").glob(pattern)), [])
