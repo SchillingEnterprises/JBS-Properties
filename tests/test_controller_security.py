@@ -48,7 +48,9 @@ class ControllerAccessControlTests(unittest.TestCase):
         self.assertIn("**/packages/*", ignore)
         self.assertIn("!**/packages/build/", ignore)
         self.assertIn("nuget restore .\\JBS_Properties.sln -NonInteractive", workflow)
-        self.assertIn("packages.config", (ROOT / "packages.config").read_text(encoding="utf-8-sig"))
+        package_manifest = ROOT / "packages.config"
+        self.assertTrue(package_manifest.is_file())
+        self.assertTrue(ET.parse(package_manifest).getroot().findall("package"))
 
     def test_unused_restsharp_package_is_not_restored_or_referenced(self):
         project = ET.parse(ROOT / "JBS_Properties.csproj").getroot()
