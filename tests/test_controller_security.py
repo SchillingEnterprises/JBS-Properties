@@ -274,7 +274,7 @@ class BootstrapAndAccessibilityContractTests(unittest.TestCase):
         for name in ("Create.cshtml", "Edit.cshtml", "Delete.cshtml"):
             with self.subTest(view=name):
                 source = (DWELLING_VIEWS / name).read_text(encoding="utf-8-sig")
-                self.assertIn("Html.BeginForm()", source)
+                self.assertRegex(source, r"Html\.BeginForm\(")
                 self.assertIn("@Html.AntiForgeryToken()", source)
 
     def test_shared_property_fields_keep_labels_and_validation_messages(self):
