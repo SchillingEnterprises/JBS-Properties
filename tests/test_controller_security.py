@@ -154,6 +154,22 @@ class ControllerAccessControlTests(unittest.TestCase):
                 pattern = r"(?s)\[HttpPost[^]]*\]\s*\[ValidateAntiForgeryToken\]\s*public\s+ActionResult\s+" + action + r"\b"
                 self.assertRegex(source, pattern)
 
+    def test_dwelling_edits_use_route_id_and_update_only_the_persisted_record(self):
+        controller = (CONTROLLERS / "DwellingsController.cs").read_text(encoding="utf-8-sig")
+        edit_view = (DWELLING_VIEWS / "Edit.cshtml").read_text(encoding="utf-8-sig")
+        create_action = controller.split("public ActionResult Create(", 1)[1].split("public ActionResult Edit(", 1)[0]
+        edit_action = controller.split("public ActionResult Edit(int id,", 1)[1].split("public ActionResult Delete(", 1)[0]
+
+        self.assertNotIn('"Id,', create_action)
+        self.assertIn("db.Dwellings.Find(id)", edit_action)
+        self.assertIn("if (dwelling == null)", edit_action)
+        self.assertIn("db.SaveChanges()", edit_action)
+        self.assertNotIn("EntityState.Modified", controller)
+        self.assertNotIn("Dwelling dwelling)", edit_action)
+        self.assertNotIn("Id,", edit_action.split("Dwelling updatedDwelling)", 1)[0])
+        self.assertIn('Html.BeginForm("Edit", "Dwellings", new { id = Model.Id }', edit_view)
+        self.assertNotIn("Html.HiddenFor(model => model.Id)", edit_view)
+
     def test_property_map_key_is_not_committed_to_the_view(self):
         view = (DWELLING_VIEWS / "Details.cshtml").read_text(encoding="utf-8-sig")
         self.assertNotRegex(view, r"AIza[0-9A-Za-z_-]{30,}")
@@ -258,7 +274,7 @@ class BootstrapAndAccessibilityContractTests(unittest.TestCase):
         for name in ("Create.cshtml", "Edit.cshtml", "Delete.cshtml"):
             with self.subTest(view=name):
                 source = (DWELLING_VIEWS / name).read_text(encoding="utf-8-sig")
-                self.assertIn("Html.BeginForm()", source)
+                self.assertRegex(source, r"Html\.BeginForm\(")
                 self.assertIn("@Html.AntiForgeryToken()", source)
 
     def test_shared_property_fields_keep_labels_and_validation_messages(self):

@@ -12,10 +12,9 @@
 
 <div class="card">
     <div class="card-body p-4">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Edit", "Dwellings", new { id = Model.Id }, FormMethod.Post, null))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(model => model.Id)
             @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
             @Html.Partial("_DwellingFormFields", Model)
             <div class="d-flex flex-wrap gap-2 mt-4">
