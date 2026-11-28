@@ -1,5 +1,4 @@
 ﻿using John_Baxter_Schilling.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -43,7 +42,7 @@ namespace John_Baxter_Schilling.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,PropertyAddressNumber,Availability,CurrentlyRented,PropertyStreetName,PropertyCity,PropertyPostalCode,PropertyPurchaseAmount,PurchaseDate,NamesOnLease,PhoneNumberForTennet,PrimaryTennetEmailAddress,LeaseRenewalDate")] Dwelling dwelling)
+        public ActionResult Create([Bind(Include = "PropertyAddressNumber,Availability,CurrentlyRented,PropertyStreetName,PropertyCity,PropertyPostalCode,PropertyPurchaseAmount,PurchaseDate,NamesOnLease,PhoneNumberForTennet,PrimaryTennetEmailAddress,LeaseRenewalDate")] Dwelling dwelling)
         {
             if (ModelState.IsValid)
             {
@@ -75,15 +74,36 @@ namespace John_Baxter_Schilling.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,PropertyAddressNumber,Availability,CurrentlyRented,PropertyStreetName,PropertyCity,PropertyPostalCode,PropertyPurchaseAmount,PurchaseDate,NamesOnLease,PhoneNumberForTennet,PrimaryTennetEmailAddress,LeaseRenewalDate")] Dwelling dwelling)
+        public ActionResult Edit(int id, [Bind(Include = "PropertyAddressNumber,Availability,CurrentlyRented,PropertyStreetName,PropertyCity,PropertyPostalCode,PropertyPurchaseAmount,PurchaseDate,NamesOnLease,PhoneNumberForTennet,PrimaryTennetEmailAddress,LeaseRenewalDate")] Dwelling updatedDwelling)
         {
-            if (ModelState.IsValid)
+            Dwelling dwelling = db.Dwellings.Find(id);
+            if (dwelling == null)
             {
-                db.Entry(dwelling).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return HttpNotFound();
             }
-            return View(dwelling);
+
+            if (!ModelState.IsValid)
+            {
+                updatedDwelling.Id = id;
+                return View(updatedDwelling);
+            }
+
+            // Update the record selected by the route, never a client-supplied primary key.
+            dwelling.PropertyAddressNumber = updatedDwelling.PropertyAddressNumber;
+            dwelling.Availability = updatedDwelling.Availability;
+            dwelling.CurrentlyRented = updatedDwelling.CurrentlyRented;
+            dwelling.PropertyStreetName = updatedDwelling.PropertyStreetName;
+            dwelling.PropertyCity = updatedDwelling.PropertyCity;
+            dwelling.PropertyPostalCode = updatedDwelling.PropertyPostalCode;
+            dwelling.PropertyPurchaseAmount = updatedDwelling.PropertyPurchaseAmount;
+            dwelling.PurchaseDate = updatedDwelling.PurchaseDate;
+            dwelling.NamesOnLease = updatedDwelling.NamesOnLease;
+            dwelling.PhoneNumberForTennet = updatedDwelling.PhoneNumberForTennet;
+            dwelling.PrimaryTennetEmailAddress = updatedDwelling.PrimaryTennetEmailAddress;
+            dwelling.LeaseRenewalDate = updatedDwelling.LeaseRenewalDate;
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Dwellings/Delete/5
